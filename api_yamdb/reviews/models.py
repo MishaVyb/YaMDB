@@ -1,20 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 
-
-class User(AbstractUser):
-
-    role = models.CharField()
-    bio = models.TextField(
-        'Биография',
-        blank=True,
-    )
+User = get_user_model()
 
 
 class Category(models.Model):
     """Модель таблицы Category."""
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=100)
     slug = models.SlugField()
 
     class Meta:
@@ -28,7 +21,7 @@ class Category(models.Model):
 class Genre(models.Model):
     """Модель таблицы Genre."""
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
 
     class Meta:
@@ -42,7 +35,7 @@ class Genre(models.Model):
 class Title(models.Model):
     """Модель таблицы Title."""
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=100)
     year = models.IntegerField()
     category = models.ForeignKey(Category,
                                  related_name='titles',
