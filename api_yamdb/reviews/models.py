@@ -81,8 +81,8 @@ class Review(models.Model):
         return self.text[:40]
 
 
-class Comments(models.Model):
-    """Модель таблицы Comments."""
+class Comment(models.Model):
+    """Модель таблицы Comment."""
 
     review = models.ForeignKey(Review,
                                related_name='comments',
