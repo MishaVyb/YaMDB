@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from rest_framework.relations import SlugRelatedField
 
-from review.models import Review, Comment
+from reviews.models import Review, Comment
 
 class ReviewSerializer(serializers.ModelSerializer):
 

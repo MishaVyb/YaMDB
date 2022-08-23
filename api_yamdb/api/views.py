@@ -3,12 +3,12 @@ from reviews.models import Review, Comment
 from rest_framework import viewsets, permissions, mixins, filters
 from rest_framework.pagination import LimitOffsetPagination
 
-from .permissions import AuthorAllOthersReadOnly
+from .permissions import ReviewCommentPermission
 from .serializers import (CommentSerializer, ReviewSerializer)
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
-    permission_classes = (AuthorAllOthersReadOnly,)
+    permission_classes = (ReviewCommentPermission,)
 
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
@@ -18,7 +18,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 class CommentViewSet(viewsets.ModelViewSet):
-    permission_classes = (AuthorAllOthersReadOnly,)
+    permission_classes = (ReviewCommentPermission,)
 
     queryset = Comment.objects.all()
     serializer_class = ReviewSerializer
