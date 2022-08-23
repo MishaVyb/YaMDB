@@ -1,4 +1,5 @@
-from reviews.models import Category, Genre, Title, Genre_Title, Review, Comment, User
+from reviews.models import (Category, Genre, Title, Genre_Title,
+                            Review, Comment, User)
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.db.utils import IntegrityError
@@ -25,11 +26,12 @@ class Command(BaseCommand):
             _model = file_table[1]
             with open(os.path.join(settings.BASE_DIR, 'static/data',
                                    file_table[0]
-                                  ), 'r') as csv_file:
+                                   ), 'r') as csv_file:
                 csv_reader = csv.reader(csv_file, delimiter=',')
                 header = next(csv_reader)
                 for row in csv_reader:
-                    _object_dict = {key: value for key, value in zip(header, row)}
+                    _object_dict = {key: value for key,
+                                    value in zip(header, row)}
                     try:
                         _model.objects.create(**_object_dict)
                     except IntegrityError:

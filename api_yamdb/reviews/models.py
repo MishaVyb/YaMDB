@@ -7,8 +7,8 @@ User = get_user_model()
 class Category(models.Model):
     """Модель таблицы Category."""
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField()
+    name = models.CharField(max_length=256)
+    slug = models.SlugField(max_length=50)
 
     class Meta:
         verbose_name = 'Категория'
@@ -21,8 +21,8 @@ class Category(models.Model):
 class Genre(models.Model):
     """Модель таблицы Genre."""
 
-    name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    name = models.CharField(max_length=256)
+    slug = models.SlugField(max_length=50)
 
     class Meta:
         verbose_name = 'Жанр'
@@ -35,10 +35,11 @@ class Genre(models.Model):
 class Title(models.Model):
     """Модель таблицы Title."""
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=256)
     year = models.IntegerField()
     category = models.ForeignKey(Category,
                                  related_name='titles',
+                                 null=True,
                                  on_delete=models.SET_NULL)
     genres = models.ManyToManyField(Genre,
                                     through='Genre_Title')
@@ -71,11 +72,12 @@ class Review(models.Model):
                                related_name='reviews',
                                on_delete=models.CASCADE)
     score = models.IntegerField()
-    pub_date = models.DateTimeField()
+    pub_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Обзор'
         verbose_name_plural = 'Обзоры'
+        ordering = ['title']
 
     def __str__(self):
         return self.text[:40]
@@ -91,11 +93,12 @@ class Comment(models.Model):
     author = models.ForeignKey(User,
                                related_name='comments',
                                on_delete=models.CASCADE)
-    pub_date = models.DateTimeField()
+    pub_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
+        ordering = ['review']
 
     def __str__(self):
         return self.text[:40]
