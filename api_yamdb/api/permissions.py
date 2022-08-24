@@ -1,34 +1,41 @@
 from rest_framework import permissions
+from users.models import User
 
 
-class IsAuthorOrReadOnly(permissions.BasePermission):
-
-    def has_permission(self, request, view):
-        user = request.user
-        return (
-            user.is_authenticated and user.is_user
-            or request.method in permissions.SAFE_METHODS
-        )    
-
-    message = 'Вам недоступно редактирование чужого поста'
-
-    def has_object_permission(self, request, view, obj):
-        return (request.method in permissions.SAFE_METHODS
-                or obj.author == request.user)
-
-
-class IsAdminOrReadOnly(permissions.BasePermission):
+class AdminOnlyPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        user = request.user
-        return (
-            user.is_authenticated and user.is_admin
-            or user.is_superuser
-        )
+        if request.user.is_superuser:
+            return True
+        elif request.user.is_authenticated and request.user.is_admin:
+            return True
+
+
+class AdminOrReadOnlyPermission(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        elif request.user.is_superuser:
+            return True
+        elif request.user.is_authenticated and request.user.is_admin:
+            return True
+
+class AuthorAdminModeratorPermission(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
-        user = request.user
-        return (
-            user.is_authenticated and user.is_admin
-            or user.is_superuser
-        )
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        elif obj.author == request.user:
+            return True
+        elif request.user.is_superuser:
+            return True
+        elif (
+                request.user.is_authenticated
+                and request.user.is_admin):
+            return True
+        elif (
+                request.user.is_authenticated
+                and request.user.is_moderator
+        ):
+            return True
