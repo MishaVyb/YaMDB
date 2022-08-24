@@ -1,12 +1,15 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 
-from .models import User, Genre, Title, Category, Review, Comments, Genre_Title
+
+from reviews.models import Genre, Title, Category, Review, Comment, Genre_Title
+
+User = get_user_model()
 
 admin.site.register(User)
-
 admin.site.register(Genre)
 admin.site.register(Title)
 admin.site.register(Category)
 admin.site.register(Review)
-admin.site.register(Comments)
+admin.site.register(Comment)
 admin.site.register(Genre_Title)
