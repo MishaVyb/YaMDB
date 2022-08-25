@@ -11,8 +11,11 @@ class User(AbstractUser):
         blank=True,
     )
 
-class Confirmation(models.Model)
-    username = models.CharField(max_length=150, unique=True)
+
+class Confirmation(models.Model):
+    user = models.OneToOneField(User,
+                                on_delete=models.DO_NOTHING,
+                                related_name='confirmation', null=True)
     code = models.PositiveIntegerField(
         'Six digits code for getting access to token endpoint',
         null=True,

@@ -28,17 +28,15 @@ class SignUpView(generics.CreateAPIView):
         start = 1
         end = (10**DIGITS_AMOUNT_AT_CONFIRMATION_CODE) - 1
         confirmation_code = random.randint(start, end)
-        try:
-            Confirmation.objects.create(username=user.username,
-                                        code=confirmation_code)
-        except:
-            raise ValueError
+        confirmation, created = Confirmation.objects.update_or_create(
+                                                 user=user,
+                                                 code=confirmation_code)
 
     def send_email(self, user: User):
         send_mail(
             subject=self.email_subject,
             message=self.email_message.format(
-                username=user.username, code=user.confirmation_code
+                username=user.username, code=user.confirmation.code
             ),
             recipient_list=[user.email],
             from_email=self.email_from,
