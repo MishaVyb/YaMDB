@@ -4,9 +4,8 @@ from reviews.choices import ROLE_CHOICES
 
 
 class User(AbstractUser):
-    role = models.CharField(
-        choices=ROLE_CHOICES, max_length=10, default='user'
-    )
+    role = models.CharField(choices=ROLE_CHOICES, max_length=10,
+                            default=ROLE_CHOICES[0])
     bio = models.TextField(
         'Биография',
         blank=True,
