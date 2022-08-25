@@ -12,15 +12,14 @@ class AdminOnlyPermission(permissions.BasePermission):
             return True
 
 
-class AdminOrReadOnlyPermission(permissions.BasePermission):
+class IsAdminOrReadonly(BasePermission):
 
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        elif request.user.is_superuser:
-            return True
-        elif request.user.is_authenticated and request.user.role=='admin':
-            return True
+
+        return (request.method in permissions.SAFE_METHODS
+                or request.user.role == 'admin')
+
+
 
 class AuthorAdminModeratorPermission(permissions.BasePermission):
 
@@ -33,11 +32,13 @@ class AuthorAdminModeratorPermission(permissions.BasePermission):
             return True
         elif (
                 request.user.is_authenticated
-                and request.user.role=='admin'):
+
+                and request.user.role == 'admin'):
             return True
         elif (
                 request.user.is_authenticated
-                and request.user.role=='moderator'
+                and request.user.role == 'moderator'
+
         ):
             return True
 
