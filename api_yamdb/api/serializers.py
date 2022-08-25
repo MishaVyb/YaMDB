@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator
 from rest_framework import serializers
 
 from reviews.models import Title, Genre, Category
-
+from reviews.models import Review, Comment
 
 class GenreSerializer(serializers.ModelSerializer):
 
@@ -50,3 +50,31 @@ class TitlePostSerializer(serializers.ModelSerializer):
         model = Title
         fields = ('id', 'name', 'description', 'category',
                   'genre', 'year')
+
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+
+    author = serializers.SlugRelatedField(
+        slug_field='username', read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ('id', 'text', 'author', 'score', 'pub_date')
+
+    def validate_score(self, value):
+        if not 1 <= int(value) <= 10:
+            raise serializers.ValidationError(
+                'Оценка должна быть в диапазоне от 1 до 10')
+        return value
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    author = serializers.SlugRelatedField(
+        slug_field='username', read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'text', 'author', 'pub_date')
+
