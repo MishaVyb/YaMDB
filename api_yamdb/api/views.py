@@ -1,11 +1,8 @@
 from django.db.models import Avg
 from rest_framework import viewsets, filters
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
+# from rest_framework.permissions import IsAuthenticated
 
-from api.permissions import (
-    AdminOnlyPermission, AdminOrReadOnlyPermission, AuthorAdminModeratorPermission
-)
 from api.serializers import (
     CategorySerializer, GenreSerializer, TitleGetSerializer,
     TitlePostSerializer,
@@ -14,14 +11,16 @@ from reviews.models import Category, Genre, Title
 from django.shortcuts import get_object_or_404
 from reviews.models import Title, Review
 
-from .permissions import ReviewCommentPermission
+from .permissions import (ListAnyOtherAdmin,
+                          GetAnyOtherAdmin,
+                          ReviewCommentPermission)
 from .serializers import CommentSerializer, ReviewSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [AdminOrReadOnlyPermission]
+    permission_classes = [ListAnyOtherAdmin]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
     search_fields = ['name']
@@ -31,7 +30,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [AdminOrReadOnlyPermission]
+    permission_classes = [ListAnyOtherAdmin]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
     search_fields = ['name']
@@ -42,13 +41,14 @@ class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.annotate(
         rating=Avg('reviews__score')).order_by('name')
     ordering_fields = ('year', 'name')
-    permission_classes = [AdminOrReadOnlyPermission]
+    permission_classes = [GetAnyOtherAdmin]
     pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return TitleGetSerializer
         return TitlePostSerializer
+
 
 class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = (ReviewCommentPermission,)
@@ -82,4 +82,3 @@ class CommentViewSet(viewsets.ModelViewSet):
         review = get_object_or_404(title.reviews.all(),
                                    pk=self.kwargs.get('review_id'))
         return review.comments.all()
-

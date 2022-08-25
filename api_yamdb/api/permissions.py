@@ -8,17 +8,16 @@ class AdminOnlyPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.is_superuser:
             return True
-        elif request.user.is_authenticated and request.user.role=='admin':
+        elif request.user.is_authenticated and request.user.role == 'admin':
             return True
 
 
-class IsAdminOrReadonly(BasePermission):
+class IsAdminOrReadonly(permissions.BasePermission):
 
     def has_permission(self, request, view):
 
         return (request.method in permissions.SAFE_METHODS
                 or request.user.role == 'admin')
-
 
 
 class AuthorAdminModeratorPermission(permissions.BasePermission):
@@ -43,6 +42,28 @@ class AuthorAdminModeratorPermission(permissions.BasePermission):
             return True
 
 
+class ListAnyOtherAdmin(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return ((request.user.is_authenticated
+                 and request.user.role == 'admin')
+                or request.method in permissions.SAFE_METHODS)
+
+    def has_object_permission(self, request, view, obj):
+        return (request.user.is_authenticated and request.user.role == 'admin')
+
+
+class GetAnyOtherAdmin(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        return ((request.user.is_authenticated
+                 and request.user.role == 'admin')
+                or request.method in permissions.SAFE_METHODS)
+
+    def has_object_permission(self, request, view, obj):
+        return request.method == 'GET' or (request.user.is_authenticated
+                                           and request.user.role == 'admin')
+
 
 class ReviewCommentPermission(permissions.BasePermission):
 
@@ -51,7 +72,7 @@ class ReviewCommentPermission(permissions.BasePermission):
                 or request.method in permissions.SAFE_METHODS)
 
     def has_object_permission(self, request, view, obj):
-        return request.user.is_authenticated and (request.user.is_superuser
-                or request.user.role in ('admin', 'moderator')
-                or obj.author == request.user
-                or request.method in permissions.SAFE_METHODS)
+        return (request.method == 'GET'
+                or (request.user.is_authenticated
+                    and (request.user.role in ('admin', 'moderator')
+                    or request.user.is_superuser or request.user == obj.author)))

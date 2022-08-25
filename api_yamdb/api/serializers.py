@@ -58,18 +58,23 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     author = serializers.SlugRelatedField(
         slug_field='username', read_only=True)
-    title_id = serializers.HiddenField(default='title_id')
 
     class Meta:
         model = Review
         fields = ('id', 'text', 'author', 'score', 'pub_date')
 
-        validators = [
-            UniqueTogetherValidator(
-                queryset=Review.objects.all(),
-                fields=('title_id', 'author')
-            )
-        ]
+        # validators = [
+        #     UniqueTogetherValidator(
+        #         queryset=Review.objects.all(),
+        #         fields=('title_id', 'author')
+        #     )
+        # ]
+
+    def validate(self, data):
+        if Review.objects.filter(author=data['author'], ):
+            raise serializers.ValidationError('Так не можно!')
+        return data
+
 
     def validate_score(self, value):
         if not 1 <= int(value) <= 10:
