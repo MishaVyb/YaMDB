@@ -5,7 +5,7 @@ from rest_framework import generics, pagination, permissions, status, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-from users.models import User
+from users.models import User, Confirmation
 from users.permitions import AdminUserPermission
 from users.serializers import (ConfirmationCodeTokenSerializer,
                                SelfUserSerializer, UserSerializer)
@@ -27,8 +27,12 @@ class SignUpView(generics.CreateAPIView):
     def generate_code(self, user: User):
         start = 1
         end = (10**DIGITS_AMOUNT_AT_CONFIRMATION_CODE) - 1
-        user.confirmation_code = random.randint(start, end)
-        user.save()
+        confirmation_code = random.randint(start, end)
+        try:
+            Confirmation.objects.create(username=user.username,
+                                        code=confirmation_code)
+        except:
+            raise ValueError
 
     def send_email(self, user: User):
         send_mail(
