@@ -1,10 +1,9 @@
 from django.db.models import Avg
 from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
 
 from api.permissions import (
-    AdminOnlyPermission, IsAdminOrReadonlyPermission
+    ListAnyOtherAdmin, GetAnyOtherAdmin
 )
 from api.serializers import (
     CategorySerializer, GenreSerializer, TitleGetSerializer,
@@ -26,7 +25,7 @@ class CategoryViewSet(
 ):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAdminOrReadonlyPermission]
+    permission_classes = [ListAnyOtherAdmin]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
     search_fields = ['name']
@@ -41,7 +40,7 @@ class GenreViewSet(
 ):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [IsAdminOrReadonlyPermission]
+    permission_classes = [ListAnyOtherAdmin]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
     search_fields = ['name']
@@ -52,7 +51,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.annotate(
         rating=Avg('reviews__score')).order_by('name')
     ordering_fields = ('year', 'name')
-    permission_classes = [IsAdminOrReadonlyPermission]
+    permission_classes = [GetAnyOtherAdmin]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
     search_fields = ['name']
