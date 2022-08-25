@@ -8,7 +8,7 @@ class Category(models.Model):
     """Модель таблицы Category."""
 
     name = models.CharField(max_length=256)
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Категория'
@@ -22,7 +22,7 @@ class Genre(models.Model):
     """Модель таблицы Genre."""
 
     name = models.CharField(max_length=256)
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Жанр'
@@ -37,11 +37,12 @@ class Title(models.Model):
 
     name = models.CharField(max_length=256)
     year = models.IntegerField()
+    description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(Category,
                                  related_name='titles',
                                  null=True,
                                  on_delete=models.SET_NULL)
-    genres = models.ManyToManyField(Genre,
+    genre = models.ManyToManyField(Genre,
                                     through='Genre_Title')
 
     class Meta:

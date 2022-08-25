@@ -8,7 +8,7 @@ class AdminOnlyPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.is_superuser:
             return True
-        elif request.user.is_authenticated and request.user.is_admin:
+        elif request.user.is_authenticated and request.user.role=='admin':
             return True
 
 
@@ -19,7 +19,7 @@ class AdminOrReadOnlyPermission(permissions.BasePermission):
             return True
         elif request.user.is_superuser:
             return True
-        elif request.user.is_authenticated and request.user.is_admin:
+        elif request.user.is_authenticated and request.user.role=='admin':
             return True
 
 class AuthorAdminModeratorPermission(permissions.BasePermission):
@@ -33,11 +33,11 @@ class AuthorAdminModeratorPermission(permissions.BasePermission):
             return True
         elif (
                 request.user.is_authenticated
-                and request.user.is_admin):
+                and request.user.role=='admin'):
             return True
         elif (
                 request.user.is_authenticated
-                and request.user.is_moderator
+                and request.user.role=='moderator'
         ):
             return True
 
@@ -51,8 +51,6 @@ class ReviewCommentPermission(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return (request.user.is_superuser
-                or request.user.role == 'admin'
-                or request.user.role == 'moderator'
+                or request.user.role in ('admin', 'moderator')
                 or obj.author == request.user
                 or request.method in permissions.SAFE_METHODS)
-

@@ -34,36 +34,36 @@ tests/test_01_users.py::Test01UserAPI::test_09_users_check_permissions PASSED [ 
 tests/test_01_users.py::Test01UserAPI::test_10_users_me_get_admin PASSED [ 50%]
 tests/test_01_users.py::Test01UserAPI::test_11_01_users_me_patch_admin PASSED [ 52%]
 tests/test_01_users.py::Test01UserAPI::test_11_02_users_me_patch_user PASSED [ 54%]
-tests/test_02_category.py::Test02CategoryAPI::test_01_category_not_auth FAILED [ 56%]
+tests/test_02_category.py::Test02CategoryAPI::test_01_category_not_auth PASSED [ 56%]
 tests/test_02_category.py::Test02CategoryAPI::test_02_category_admin FAILED [ 58%]
 tests/test_02_category.py::Test02CategoryAPI::test_03_category_delete_admin FAILED [ 60%]
-tests/test_02_category.py::Test02CategoryAPI::test_04_category_check_permission_admin FAILED [ 62%]
-tests/test_02_category.py::Test02CategoryAPI::test_05_category_create_user FAILED [ 64%]
-tests/test_02_category.py::Test02CategoryAPI::test_06_category_create_moderator FAILED [ 66%]
-tests/test_03_genre.py::Test03GenreAPI::test_01_genre_not_auth FAILED    [ 67%]
+tests/test_02_category.py::Test02CategoryAPI::test_04_category_check_permission_admin PASSED [ 62%]
+tests/test_02_category.py::Test02CategoryAPI::test_05_category_create_user PASSED [ 64%]
+tests/test_02_category.py::Test02CategoryAPI::test_06_category_create_moderator PASSED [ 66%]
+tests/test_03_genre.py::Test03GenreAPI::test_01_genre_not_auth PASSED    [ 67%]
 tests/test_03_genre.py::Test03GenreAPI::test_02_genre FAILED             [ 69%]
 tests/test_03_genre.py::Test03GenreAPI::test_03_genres_delete FAILED     [ 71%]
-tests/test_03_genre.py::Test03GenreAPI::test_04_genres_check_permission FAILED [ 73%]
-tests/test_03_genre.py::Test03GenreAPI::test_05_genre_create_user FAILED [ 75%]
-tests/test_03_genre.py::Test03GenreAPI::test_06_genre_create_moderator FAILED [ 77%]
-tests/test_04_title.py::Test04TitleAPI::test_01_title_not_auth FAILED    [ 79%]
+tests/test_03_genre.py::Test03GenreAPI::test_04_genres_check_permission PASSED [ 73%]
+tests/test_03_genre.py::Test03GenreAPI::test_05_genre_create_user PASSED [ 75%]
+tests/test_03_genre.py::Test03GenreAPI::test_06_genre_create_moderator PASSED [ 77%]
+tests/test_04_title.py::Test04TitleAPI::test_01_title_not_auth PASSED    [ 79%]
 tests/test_04_title.py::Test04TitleAPI::test_02_title_admin FAILED       [ 81%]
-tests/test_04_title.py::Test04TitleAPI::test_03_titles_detail FAILED     [ 83%]
-tests/test_04_title.py::Test04TitleAPI::test_04_titles_check_permission FAILED [ 84%]
-tests/test_05_review.py::Test05ReviewAPI::test_01_review_not_auth FAILED [ 86%]
+tests/test_04_title.py::Test04TitleAPI::test_03_titles_detail PASSED     [ 83%]
+tests/test_04_title.py::Test04TitleAPI::test_04_titles_check_permission PASSED [ 84%]
+tests/test_05_review.py::Test05ReviewAPI::test_01_review_not_auth PASSED [ 86%]
 tests/test_05_review.py::Test05ReviewAPI::test_02_review_admin FAILED    [ 88%]
 tests/test_05_review.py::Test05ReviewAPI::test_03_review_detail FAILED   [ 90%]
-tests/test_05_review.py::Test05ReviewAPI::test_04_reviews_check_permission FAILED [ 92%]
-tests/test_06_comment.py::Test06CommentAPI::test_01_comment_not_auth FAILED [ 94%]
-tests/test_06_comment.py::Test06CommentAPI::test_02_comment FAILED       [ 96%]
+tests/test_05_review.py::Test05ReviewAPI::test_04_reviews_check_permission PASSED [ 92%]
+tests/test_06_comment.py::Test06CommentAPI::test_01_comment_not_auth PASSED [ 94%]
+tests/test_06_comment.py::Test06CommentAPI::test_02_comment PASSED       [ 96%]
 tests/test_06_comment.py::Test06CommentAPI::test_03_review_detail FAILED [ 98%]
-tests/test_06_comment.py::Test06CommentAPI::test_04_comment_check_permission FAILED [100%]
+tests/test_06_comment.py::Test06CommentAPI::test_04_comment_check_permission PASSED [100%]
 
 =================================== FAILURES ===================================
 _________ Test00UserRegistration.test_00_obtain_jwt_token_invalid_data _________
 
-self = <tests.test_00_user_registration.Test00UserRegistration object at 0x105dbee50>
-client = <django.test.client.Client object at 0x105dc2880>
+self = <tests.test_00_user_registration.Test00UserRegistration object at 0x110dbe430>
+client = <django.test.client.Client object at 0x110dfbbe0>
 
     @pytest.mark.django_db(transaction=True)
     def test_00_obtain_jwt_token_invalid_data(self, client):
@@ -109,48 +109,97 @@ tests/test_00_user_registration.py:197: AssertionError
 WARNING  django.request:log.py:222 Bad Request: /api/v1/auth/token/
 WARNING  django.request:log.py:222 Bad Request: /api/v1/auth/token/
 WARNING  django.request:log.py:222 Unauthorized: /api/v1/auth/token/
-_________________ Test02CategoryAPI.test_01_category_not_auth __________________
-
-self = <tests.test_02_category.Test02CategoryAPI object at 0x105e1c6a0>
-client = <django.test.client.Client object at 0x10611e100>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_01_category_not_auth(self, client):
-        response = client.get('/api/v1/categories/')
->       assert response.status_code != 404, (
-            'Страница `/api/v1/categories/` не найдена, проверьте этот адрес в *urls.py*'
-        )
-E       AssertionError: Страница `/api/v1/categories/` не найдена, проверьте этот адрес в *urls.py*
-E       assert 404 != 404
-E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
-
-tests/test_02_category.py:11: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
 ___________________ Test02CategoryAPI.test_02_category_admin ___________________
 
-self = <tests.test_02_category.Test02CategoryAPI object at 0x105ed0be0>
-admin_client = <rest_framework.test.APIClient object at 0x105e96490>
+self = <tests.test_02_category.Test02CategoryAPI object at 0x11111cac0>
+admin_client = <rest_framework.test.APIClient object at 0x11101b280>
 
     @pytest.mark.django_db(transaction=True)
     def test_02_category_admin(self, admin_client):
         data = {}
         response = admin_client.post('/api/v1/categories/', data=data)
->       assert response.status_code == 400, (
+        assert response.status_code == 400, (
             'Проверьте, что при POST запросе `/api/v1/categories/` с не правильными данными возвращает статус 400'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/categories/` с не правильными данными возвращает статус 400
-E       assert 404 == 400
-E         +404
-E         -400
+        data = {
+            'name': 'Фильм',
+            'slug': 'films'
+        }
+        response = admin_client.post('/api/v1/categories/', data=data)
+        assert response.status_code == 201, (
+            'Проверьте, что при POST запросе `/api/v1/categories/` с правильными данными возвращает статус 201'
+        )
+        data = {
+            'name': 'Новые фильмы',
+            'slug': 'films'
+        }
+        response = admin_client.post('/api/v1/categories/', data=data)
+        assert response.status_code == 400, (
+            'Проверьте, что при POST запросе `/api/v1/categories/` нельзя создать 2 категории с одинаковым `slug`'
+        )
+        data = {
+            'name': 'Книги',
+            'slug': 'books'
+        }
+        response = admin_client.post('/api/v1/categories/', data=data)
+        assert response.status_code == 201, (
+            'Проверьте, что при POST запросе `/api/v1/categories/` с правильными данными возвращает статус 201'
+        )
+        response = admin_client.get('/api/v1/categories/')
+        assert response.status_code == 200, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращает статус 200'
+        )
+        data = response.json()
+        assert 'count' in data, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
+            'Не найден параметр `count`'
+        )
+        assert 'next' in data, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
+            'Не найден параметр `next`'
+        )
+        assert 'previous' in data, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
+            'Не найден параметр `previous`'
+        )
+        assert 'results' in data, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
+            'Не найден параметр `results`'
+        )
+        assert data['count'] == 2, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
+            'Значение параметра `count` не правильное'
+        )
+        assert type(data['results']) == list, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
+            'Тип параметра `results` должен быть список'
+        )
+        assert len(data['results']) == 2, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` не правильное'
+        )
+        assert {'name': 'Книги', 'slug': 'books'} in data['results'], (
+            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` не правильное'
+        )
+        response = admin_client.get('/api/v1/categories/?search=Книги')
+        data = response.json()
+>       assert len(data['results']) == 1, (
+            'Проверьте, что при GET запросе `/api/v1/categories/` фильтуется по search параметру названия категории'
+        )
+E       AssertionError: Проверьте, что при GET запросе `/api/v1/categories/` фильтуется по search параметру названия категории
+E       assert 2 == 1
+E         +2
+E         -1
 
-tests/test_02_category.py:22: AssertionError
+tests/test_02_category.py:88: AssertionError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
+WARNING  django.request:log.py:222 Bad Request: /api/v1/categories/
+WARNING  django.request:log.py:222 Bad Request: /api/v1/categories/
 _______________ Test02CategoryAPI.test_03_category_delete_admin ________________
 
-self = <tests.test_02_category.Test02CategoryAPI object at 0x105eb1610>
-admin_client = <rest_framework.test.APIClient object at 0x105ea5ee0>
+self = <tests.test_02_category.Test02CategoryAPI object at 0x1110eda30>
+admin_client = <rest_framework.test.APIClient object at 0x11117a820>
 
     @pytest.mark.django_db(transaction=True)
     def test_03_category_delete_admin(self, admin_client):
@@ -166,131 +215,89 @@ E         -204
 
 tests/test_02_category.py:96: AssertionError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
 WARNING  django.request:log.py:222 Not Found: /api/v1/categories/books/
-__________ Test02CategoryAPI.test_04_category_check_permission_admin ___________
-
-self = <tests.test_02_category.Test02CategoryAPI object at 0x105ea5460>
-client = <django.test.client.Client object at 0x105e96a90>
-admin_client = <rest_framework.test.APIClient object at 0x105eba2b0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_04_category_check_permission_admin(self, client, admin_client):
-        categories = create_categories(admin_client)
-        data = {
-            'name': 'Музыка',
-            'slug': 'music'
-        }
-        response = client.post('/api/v1/categories/', data=data)
->       assert response.status_code == 401, (
-            'Проверьте, что при POST запросе `/api/v1/categories/` '
-            'без токена авторизации возвращается статус 401'
-        )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/categories/` без токена авторизации возвращается статус 401
-E       assert 404 == 401
-E         +404
-E         -401
-
-tests/test_02_category.py:141: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-________________ Test02CategoryAPI.test_05_category_create_user ________________
-
-self = <tests.test_02_category.Test02CategoryAPI object at 0x1061781c0>
-user_client = <rest_framework.test.APIClient object at 0x1061782b0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_05_category_create_user(self, user_client):
-        url = '/api/v1/categories/'
-        data = {
-            'name': 'Всякое разное',
-            'slug': 'something'
-        }
-        response = user_client.post(url, data=data)
-        code = 403
->       assert response.status_code == code, (
-            f'Проверьте, что при POST запросе на `{url}`, создание категорий недоступно для '
-            f'пользователя с ролью user'
-        )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/categories/`, создание категорий недоступно для пользователя с ролью user
-E       assert 404 == 403
-E         +404
-E         -403
-
-tests/test_02_category.py:163: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-_____________ Test02CategoryAPI.test_06_category_create_moderator ______________
-
-self = <tests.test_02_category.Test02CategoryAPI object at 0x105ea5520>
-moderator_client = <rest_framework.test.APIClient object at 0x1061245e0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_06_category_create_moderator(self, moderator_client):
-        url = '/api/v1/categories/'
-        data = {
-            'name': 'Всякое разное',
-            'slug': 'something'
-        }
-        response = moderator_client.post(url, data=data)
-        code = 403
->       assert response.status_code == code, (
-            f'Проверьте, что при POST запросе на `{url}`, создание категорий недоступно для '
-            f'пользователя с ролью moderator'
-        )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/categories/`, создание категорий недоступно для пользователя с ролью moderator
-E       assert 404 == 403
-E         +404
-E         -403
-
-tests/test_02_category.py:177: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-____________________ Test03GenreAPI.test_01_genre_not_auth _____________________
-
-self = <tests.test_03_genre.Test03GenreAPI object at 0x105e4e9a0>
-client = <django.test.client.Client object at 0x105e1ecd0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_01_genre_not_auth(self, client):
-        response = client.get('/api/v1/genres/')
->       assert response.status_code != 404, (
-            'Страница `/api/v1/genres/` не найдена, проверьте этот адрес в *urls.py*'
-        )
-E       AssertionError: Страница `/api/v1/genres/` не найдена, проверьте этот адрес в *urls.py*
-E       assert 404 != 404
-E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
-
-tests/test_03_genre.py:11: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
 _________________________ Test03GenreAPI.test_02_genre _________________________
 
-self = <tests.test_03_genre.Test03GenreAPI object at 0x105e3a790>
-admin_client = <rest_framework.test.APIClient object at 0x105e82b50>
+self = <tests.test_03_genre.Test03GenreAPI object at 0x1110b5640>
+admin_client = <rest_framework.test.APIClient object at 0x111173640>
 
     @pytest.mark.django_db(transaction=True)
     def test_02_genre(self, admin_client):
         data = {}
         response = admin_client.post('/api/v1/genres/', data=data)
->       assert response.status_code == 400, (
+        assert response.status_code == 400, (
             'Проверьте, что при POST запросе `/api/v1/genres/` с не правильными данными возвращает статус 400'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/genres/` с не правильными данными возвращает статус 400
-E       assert 404 == 400
-E         +404
-E         -400
+        data = {'name': 'Ужасы', 'slug': 'horror'}
+        response = admin_client.post('/api/v1/genres/', data=data)
+        assert response.status_code == 201, (
+            'Проверьте, что при POST запросе `/api/v1/genres/` с правильными данными возвращает статус 201'
+        )
+        data = {'name': 'Триллер', 'slug': 'horror'}
+        response = admin_client.post('/api/v1/genres/', data=data)
+        assert response.status_code == 400, (
+            'Проверьте, что при POST запросе `/api/v1/genres/` нельзя создать 2 жанра с одинаковым `slug`'
+        )
+        data = {'name': 'Комедия', 'slug': 'comedy'}
+        response = admin_client.post('/api/v1/genres/', data=data)
+        assert response.status_code == 201, (
+            'Проверьте, что при POST запросе `/api/v1/genres/` с правильными данными возвращает статус 201'
+        )
+        response = admin_client.get('/api/v1/genres/')
+        assert response.status_code == 200, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращает статус 200'
+        )
+        data = response.json()
+        assert 'count' in data, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
+            'Не найден параметр `count`'
+        )
+        assert 'next' in data, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
+            'Не найден параметр `next`'
+        )
+        assert 'previous' in data, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
+            'Не найден параметр `previous`'
+        )
+        assert 'results' in data, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
+            'Не найден параметр `results`'
+        )
+        assert data['count'] == 2, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
+            'Значение параметра `count` не правильное'
+        )
+        assert type(data['results']) == list, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
+            'Тип параметра `results` должен быть список'
+        )
+        assert len(data['results']) == 2, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` не правильное'
+        )
+        assert {'name': 'Ужасы', 'slug': 'horror'} in data['results'], (
+            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` не правильное'
+        )
+        response = admin_client.get('/api/v1/genres/?search=Ужасы')
+        data = response.json()
+>       assert len(data['results']) == 1, (
+            'Проверьте, что при GET запросе `/api/v1/genres/` фильтуется по search параметру названия жанра '
+        )
+E       AssertionError: Проверьте, что при GET запросе `/api/v1/genres/` фильтуется по search параметру названия жанра 
+E       assert 2 == 1
+E         +2
+E         -1
 
-tests/test_03_genre.py:22: AssertionError
+tests/test_03_genre.py:79: AssertionError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
+WARNING  django.request:log.py:222 Bad Request: /api/v1/genres/
+WARNING  django.request:log.py:222 Bad Request: /api/v1/genres/
 _____________________ Test03GenreAPI.test_03_genres_delete _____________________
 
-self = <tests.test_03_genre.Test03GenreAPI object at 0x105e82e50>
-admin_client = <rest_framework.test.APIClient object at 0x10612d5b0>
+self = <tests.test_03_genre.Test03GenreAPI object at 0x1113eeb80>
+admin_client = <rest_framework.test.APIClient object at 0x1113bcac0>
 
     @pytest.mark.django_db(transaction=True)
     def test_03_genres_delete(self, admin_client):
@@ -306,113 +313,11 @@ E         -204
 
 tests/test_03_genre.py:87: AssertionError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
 WARNING  django.request:log.py:222 Not Found: /api/v1/genres/horror/
-________________ Test03GenreAPI.test_04_genres_check_permission ________________
-
-self = <tests.test_03_genre.Test03GenreAPI object at 0x105e08e20>
-client = <django.test.client.Client object at 0x10618d4c0>
-admin_client = <rest_framework.test.APIClient object at 0x10618d8b0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_04_genres_check_permission(self, client, admin_client):
-        genres = create_genre(admin_client)
-        data = {
-            'name': 'Боевик',
-            'slug': 'action'
-        }
-        response = client.post('/api/v1/genres/', data=data)
->       assert response.status_code == 401, (
-            'Проверьте, что при POST запросе `/api/v1/genres/` '
-            'без токена авторизации возвращается статус 401'
-        )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/genres/` без токена авторизации возвращается статус 401
-E       assert 404 == 401
-E         +404
-E         -401
-
-tests/test_03_genre.py:129: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-___________________ Test03GenreAPI.test_05_genre_create_user ___________________
-
-self = <tests.test_03_genre.Test03GenreAPI object at 0x105e530a0>
-user_client = <rest_framework.test.APIClient object at 0x105e9cfd0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_05_genre_create_user(self, user_client):
-        url = '/api/v1/genres/'
-        data = {
-            'name': 'Всякое разное',
-            'slug': 'something'
-        }
-        response = user_client.post(url, data=data)
-        code = 403
->       assert response.status_code == code, (
-            f'Проверьте, что при POST запросе на `{url}`, создание жанров недоступно для '
-            f'пользователя с ролью user'
-        )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/genres/`, создание жанров недоступно для пользователя с ролью user
-E       assert 404 == 403
-E         +404
-E         -403
-
-tests/test_03_genre.py:151: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-________________ Test03GenreAPI.test_06_genre_create_moderator _________________
-
-self = <tests.test_03_genre.Test03GenreAPI object at 0x105e9cb20>
-moderator_client = <rest_framework.test.APIClient object at 0x105eb18e0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_06_genre_create_moderator(self, moderator_client):
-        url = '/api/v1/genres/'
-        data = {
-            'name': 'Всякое разное',
-            'slug': 'something'
-        }
-        response = moderator_client.post(url, data=data)
-        code = 403
->       assert response.status_code == code, (
-            f'Проверьте, что при POST запросе на `{url}`, создание жанров недоступно для '
-            f'пользователя с ролью moderator'
-        )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/genres/`, создание жанров недоступно для пользователя с ролью moderator
-E       assert 404 == 403
-E         +404
-E         -403
-
-tests/test_03_genre.py:165: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-____________________ Test04TitleAPI.test_01_title_not_auth _____________________
-
-self = <tests.test_04_title.Test04TitleAPI object at 0x105ea54f0>
-client = <django.test.client.Client object at 0x10618ea00>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_01_title_not_auth(self, client):
-        response = client.get('/api/v1/titles/')
->       assert response.status_code != 404, (
-            'Страница `/api/v1/titles/` не найдена, проверьте этот адрес в *urls.py*'
-        )
-E       AssertionError: Страница `/api/v1/titles/` не найдена, проверьте этот адрес в *urls.py*
-E       assert 404 != 404
-E        +  where 404 = <HttpResponseNotFound status_code=404, "text/html">.status_code
-
-tests/test_04_title.py:12: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
 ______________________ Test04TitleAPI.test_02_title_admin ______________________
 
-self = <tests.test_04_title.Test04TitleAPI object at 0x10611e2b0>
-admin_client = <rest_framework.test.APIClient object at 0x105e8c130>
+self = <tests.test_04_title.Test04TitleAPI object at 0x111062730>
+admin_client = <rest_framework.test.APIClient object at 0x1113b0820>
 
     @pytest.mark.django_db(transaction=True)
     def test_02_title_admin(self, admin_client):
@@ -420,405 +325,331 @@ admin_client = <rest_framework.test.APIClient object at 0x105e8c130>
         categories = create_categories(admin_client)
         data = {}
         response = admin_client.post('/api/v1/titles/', data=data)
->       assert response.status_code == 400, (
+        assert response.status_code == 400, (
             'Проверьте, что при POST запросе `/api/v1/titles/` с не правильными данными возвращает статус 400'
         )
-E       AssertionError: Проверьте, что при POST запросе `/api/v1/titles/` с не правильными данными возвращает статус 400
-E       assert 404 == 400
-E         +404
-E         -400
+        data = {'name': 'Поворот туда', 'year': 2000, 'genre': [genres[0]['slug'], genres[1]['slug']],
+                'category': categories[0]['slug'], 'description': 'Крутое пике'}
+        response = admin_client.post('/api/v1/titles/', data=data)
+        assert response.status_code == 201, (
+            'Проверьте, что при POST запросе `/api/v1/titles/` с правильными данными возвращает статус 201'
+        )
+        data = {'name': 'Проект', 'year': 2020, 'genre': [genres[2]['slug']], 'category': categories[1]['slug'],
+                'description': 'Главная драма года'}
+        response = admin_client.post('/api/v1/titles/', data=data)
+        assert response.status_code == 201, (
+            'Проверьте, что при POST запросе `/api/v1/titles/` с правильными данными возвращает статус 201'
+        )
+        assert type(response.json().get('id')) == int, (
+            'Проверьте, что при POST запросе `/api/v1/titles/` возвращаете данные созданного объекта. '
+            'Значение `id` нет или не является целым числом.'
+        )
+        response = admin_client.get('/api/v1/titles/')
+        assert response.status_code == 200, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращает статус 200'
+        )
+        data = response.json()
+        assert 'count' in data, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Не найден параметр `count`'
+        )
+        assert 'next' in data, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Не найден параметр `next`'
+        )
+        assert 'previous' in data, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Не найден параметр `previous`'
+        )
+        assert 'results' in data, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Не найден параметр `results`'
+        )
+        assert data['count'] == 2, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Значение параметра `count` не правильное'
+        )
+        assert type(data['results']) == list, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Тип параметра `results` должен быть список'
+        )
+        assert len(data['results']) == 2, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` не правильное'
+        )
+        if data['results'][0].get('name') == 'Поворот туда':
+            title = data['results'][0]
+        elif data['results'][1].get('name') == 'Поворот туда':
+            title = data['results'][1]
+        else:
+            assert False, (
+                'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+                'Значение параметра `results` неправильное, `name` не найдено или не сохранилось при POST запросе.'
+            )
+    
+        assert title.get('rating') is None, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` неправильное, `rating` без отзывов должен быть равен `None`'
+        )
+        assert title.get('category') == categories[0], (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` неправильное, значение `category` неправильное '
+            'или не сохранилось при POST запросе.'
+        )
+        assert genres[0] in title.get('genre', []) and genres[1] in title.get('genre', []), (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` неправильное, значение `genre` неправильное '
+            'или не сохранилось при POST запросе.'
+        )
+        assert title.get('year') == 2000, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` неправильное, значение `year` неправильное '
+            'или не сохранилось при POST запросе.'
+        )
+        assert title.get('description') == 'Крутое пике', (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` неправильное, значение `description` неправильное '
+            'или не сохранилось при POST запросе.'
+        )
+        assert type(title.get('id')) == int, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` возвращаете данные с пагинацией. '
+            'Значение параметра `results` неправильное, значение `id` нет или не является целым числом.'
+        )
+        data = {'name': 'Поворот', 'year': 2020, 'genre': [genres[1]['slug']],
+                'category': categories[1]['slug'], 'description': 'Крутое пике'}
+        admin_client.post('/api/v1/titles/', data=data)
+        response = admin_client.get(f'/api/v1/titles/?genre={genres[1]["slug"]}')
+        data = response.json()
+>       assert len(data['results']) == 2, (
+            'Проверьте, что при GET запросе `/api/v1/titles/` фильтуется по `genre` параметру `slug` жанра'
+        )
+E       AssertionError: Проверьте, что при GET запросе `/api/v1/titles/` фильтуется по `genre` параметру `slug` жанра
+E       assert 3 == 2
+E         +3
+E         -2
 
-tests/test_04_title.py:25: AssertionError
+tests/test_04_title.py:120: AssertionError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
-_____________________ Test04TitleAPI.test_03_titles_detail _____________________
-
-self = <tests.test_04_title.Test04TitleAPI object at 0x10619de80>
-client = <django.test.client.Client object at 0x10619d580>
-admin_client = <rest_framework.test.APIClient object at 0x10619da90>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_03_titles_detail(self, client, admin_client):
->       titles, categories, genres = create_titles(admin_client)
-
-tests/test_04_title.py:151: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <rest_framework.test.APIClient object at 0x10619da90>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
-
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
-
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
-________________ Test04TitleAPI.test_04_titles_check_permission ________________
-
-self = <tests.test_04_title.Test04TitleAPI object at 0x106224100>
-client = <django.test.client.Client object at 0x106224190>
-admin_client = <rest_framework.test.APIClient object at 0x1062247f0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_04_titles_check_permission(self, client, admin_client):
->       titles, categories, genres = create_titles(admin_client)
-
-tests/test_04_title.py:231: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <rest_framework.test.APIClient object at 0x1062247f0>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
-
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
-
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
-___________________ Test05ReviewAPI.test_01_review_not_auth ____________________
-
-self = <tests.test_05_review.Test05ReviewAPI object at 0x105ea5df0>
-client = <django.test.client.Client object at 0x1062704c0>
-admin_client = <rest_framework.test.APIClient object at 0x1062701c0>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_01_review_not_auth(self, client, admin_client):
->       titles, _, _ = create_titles(admin_client)
-
-tests/test_05_review.py:11: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <rest_framework.test.APIClient object at 0x1062701c0>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
-
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
-
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
+WARNING  django.request:log.py:222 Bad Request: /api/v1/titles/
 _____________________ Test05ReviewAPI.test_02_review_admin _____________________
 
-self = <tests.test_05_review.Test05ReviewAPI object at 0x105e82940>
-admin_client = <rest_framework.test.APIClient object at 0x10618d340>
+self = <tests.test_05_review.Test05ReviewAPI object at 0x1110675e0>
+admin_client = <rest_framework.test.APIClient object at 0x11117aca0>
 admin = <User: TestAdmin>
 
     @pytest.mark.django_db(transaction=True)
     def test_02_review_admin(self, admin_client, admin):
->       titles, _, _ = create_titles(admin_client)
+        titles, _, _ = create_titles(admin_client)
+        user, moderator = create_users_api(admin_client)
+        client_user = auth_client(user)
+        client_moderator = auth_client(moderator)
+        data = {}
+        response = admin_client.post(f'/api/v1/titles/{titles[0]["id"]}/reviews/', data=data)
+        assert response.status_code == 400, (
+            'Проверьте, что при POST запросе `/api/v1/titles/{title_id}/reviews/` '
+            'с не правильными данными возвращает статус 400'
+        )
+        self.create_review(admin_client, titles[0]["id"], 'qwerty', 5)
+        data = {
+            'text': 'Шляпа',
+            'score': 1
+        }
+        response = admin_client.post(f'/api/v1/titles/{titles[0]["id"]}/reviews/', data=data)
+        code = 400
+>       assert response.status_code == code, (
+            'Проверьте, что при POST запросе на `/api/v1/titles/{title_id}/reviews/` '
+            'нельзя добавить второй отзыв на то же самое произведение, и возвращается '
+            f'статус {code}'
+        )
+E       AssertionError: Проверьте, что при POST запросе на `/api/v1/titles/{title_id}/reviews/` нельзя добавить второй отзыв на то же самое произведение, и возвращается статус 400
+E       assert 201 == 400
+E         +201
+E         -400
 
-tests/test_05_review.py:32: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <rest_framework.test.APIClient object at 0x10618d340>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
-
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
-
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
+tests/test_05_review.py:49: AssertionError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
+WARNING  django.request:log.py:222 Bad Request: /api/v1/titles/10/reviews/
 ____________________ Test05ReviewAPI.test_03_review_detail _____________________
 
-self = <tests.test_05_review.Test05ReviewAPI object at 0x1061a99d0>
-client = <django.test.client.Client object at 0x105dc6970>
-admin_client = <rest_framework.test.APIClient object at 0x10618e7c0>
+self = <tests.test_05_review.Test05ReviewAPI object at 0x1110aa940>
+client = <django.test.client.Client object at 0x11111c220>
+admin_client = <rest_framework.test.APIClient object at 0x11111c340>
 admin = <User: TestAdmin>
 
     @pytest.mark.django_db(transaction=True)
     def test_03_review_detail(self, client, admin_client, admin):
->       reviews, titles, user, moderator = create_reviews(admin_client, admin)
+        reviews, titles, user, moderator = create_reviews(admin_client, admin)
+>       response = client.get(f'/api/v1/titles/{titles[0]["id"]}/reviews/{reviews[0]["id"]}/')
 
-tests/test_05_review.py:202: 
+tests/test_05_review.py:203: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:85: in create_reviews
-    titles, _, _ = create_titles(admin_client)
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
+venv/lib/python3.8/site-packages/django/test/client.py:535: in get
+    response = super().get(path, data=data, secure=secure, **extra)
+venv/lib/python3.8/site-packages/django/test/client.py:345: in get
+    return self.generic('GET', path, secure=secure, **{
+venv/lib/python3.8/site-packages/django/test/client.py:422: in generic
+    return self.request(**r)
+venv/lib/python3.8/site-packages/django/test/client.py:503: in request
+    raise exc_value
+venv/lib/python3.8/site-packages/django/core/handlers/exception.py:34: in inner
+    response = get_response(request)
+venv/lib/python3.8/site-packages/django/core/handlers/base.py:115: in _get_response
+    response = self.process_exception_by_middleware(e, request)
+venv/lib/python3.8/site-packages/django/core/handlers/base.py:113: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv/lib/python3.8/site-packages/django/views/decorators/csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv/lib/python3.8/site-packages/rest_framework/viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv/lib/python3.8/site-packages/rest_framework/views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv/lib/python3.8/site-packages/rest_framework/views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv/lib/python3.8/site-packages/rest_framework/views.py:480: in raise_uncaught_exception
+    raise exc
+venv/lib/python3.8/site-packages/rest_framework/views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv/lib/python3.8/site-packages/rest_framework/mixins.py:54: in retrieve
+    instance = self.get_object()
+venv/lib/python3.8/site-packages/rest_framework/generics.py:99: in get_object
+    self.check_object_permissions(self.request, obj)
+venv/lib/python3.8/site-packages/rest_framework/views.py:345: in check_object_permissions
+    if not permission.has_object_permission(request, self, obj):
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <rest_framework.test.APIClient object at 0x10618e7c0>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
+self = <api.permissions.ReviewCommentPermission object at 0x1110aa1f0>
+request = <rest_framework.request.Request: GET '/api/v1/titles/12/reviews/3/'>
+view = <api.views.ReviewViewSet object at 0x110cd2b50>, obj = <Review: qwerty>
 
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
+    def has_object_permission(self, request, view, obj):
+        return (request.user.is_superuser
+>               or request.user.role in ('admin', 'moderator')
+                or obj.author == request.user
+                or request.method in permissions.SAFE_METHODS)
+E       AttributeError: 'AnonymousUser' object has no attribute 'role'
 
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
+api_yamdb/api/permissions.py:54: AttributeError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
-_______________ Test05ReviewAPI.test_04_reviews_check_permission _______________
-
-self = <tests.test_05_review.Test05ReviewAPI object at 0x105d9c8e0>
-client = <django.test.client.Client object at 0x105a49f40>
-admin_client = <rest_framework.test.APIClient object at 0x1059b34c0>
-admin = <User: TestAdmin>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_04_reviews_check_permission(self, client, admin_client, admin):
->       reviews, titles, user, moderator = create_reviews(admin_client, admin)
-
-tests/test_05_review.py:319: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:85: in create_reviews
-    titles, _, _ = create_titles(admin_client)
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <rest_framework.test.APIClient object at 0x1059b34c0>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
-
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
-
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
-__________________ Test06CommentAPI.test_01_comment_not_auth ___________________
-
-self = <tests.test_06_comment.Test06CommentAPI object at 0x105a19280>
-client = <django.test.client.Client object at 0x106225040>
-admin_client = <rest_framework.test.APIClient object at 0x105dbe670>
-admin = <User: TestAdmin>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_01_comment_not_auth(self, client, admin_client, admin):
->       reviews, titles, _, _ = create_reviews(admin_client, admin)
-
-tests/test_06_comment.py:10: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:85: in create_reviews
-    titles, _, _ = create_titles(admin_client)
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <rest_framework.test.APIClient object at 0x105dbe670>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
-
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
-
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
-_______________________ Test06CommentAPI.test_02_comment _______________________
-
-self = <tests.test_06_comment.Test06CommentAPI object at 0x105844340>
-admin_client = <rest_framework.test.APIClient object at 0x105ed8e80>
-admin = <User: TestAdmin>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_02_comment(self, admin_client, admin):
->       reviews, titles, user, moderator = create_reviews(admin_client, admin)
-
-tests/test_06_comment.py:32: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:85: in create_reviews
-    titles, _, _ = create_titles(admin_client)
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <rest_framework.test.APIClient object at 0x105ed8e80>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
-
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
-
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
+ERROR    django.request:log.py:222 Internal Server Error: /api/v1/titles/12/reviews/3/
+Traceback (most recent call last):
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/mixins.py", line 54, in retrieve
+    instance = self.get_object()
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/generics.py", line 99, in get_object
+    self.check_object_permissions(self.request, obj)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 345, in check_object_permissions
+    if not permission.has_object_permission(request, self, obj):
+  File "/Users/alexey/Dev/api_yamdb/api_yamdb/api/permissions.py", line 54, in has_object_permission
+    or request.user.role in ('admin', 'moderator')
+AttributeError: 'AnonymousUser' object has no attribute 'role'
 ____________________ Test06CommentAPI.test_03_review_detail ____________________
 
-self = <tests.test_06_comment.Test06CommentAPI object at 0x105e09580>
-client = <django.test.client.Client object at 0x1061cc040>
-admin_client = <rest_framework.test.APIClient object at 0x10628ae80>
+self = <tests.test_06_comment.Test06CommentAPI object at 0x111013340>
+client = <django.test.client.Client object at 0x11100d760>
+admin_client = <rest_framework.test.APIClient object at 0x1110172b0>
 admin = <User: TestAdmin>
 
     @pytest.mark.django_db(transaction=True)
     def test_03_review_detail(self, client, admin_client, admin):
->       comments, reviews, titles, user, moderator = create_comments(admin_client, admin)
+        comments, reviews, titles, user, moderator = create_comments(admin_client, admin)
+        pre_url = f'/api/v1/titles/{titles[0]["id"]}/reviews/{reviews[0]["id"]}/comments/'
+>       response = client.get(f'{pre_url}{comments[0]["id"]}/')
 
-tests/test_06_comment.py:132: 
+tests/test_06_comment.py:134: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:105: in create_comments
-    reviews, titles, user, moderator = create_reviews(admin_client, admin)
-tests/common.py:85: in create_reviews
-    titles, _, _ = create_titles(admin_client)
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
+venv/lib/python3.8/site-packages/django/test/client.py:535: in get
+    response = super().get(path, data=data, secure=secure, **extra)
+venv/lib/python3.8/site-packages/django/test/client.py:345: in get
+    return self.generic('GET', path, secure=secure, **{
+venv/lib/python3.8/site-packages/django/test/client.py:422: in generic
+    return self.request(**r)
+venv/lib/python3.8/site-packages/django/test/client.py:503: in request
+    raise exc_value
+venv/lib/python3.8/site-packages/django/core/handlers/exception.py:34: in inner
+    response = get_response(request)
+venv/lib/python3.8/site-packages/django/core/handlers/base.py:115: in _get_response
+    response = self.process_exception_by_middleware(e, request)
+venv/lib/python3.8/site-packages/django/core/handlers/base.py:113: in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+venv/lib/python3.8/site-packages/django/views/decorators/csrf.py:54: in wrapped_view
+    return view_func(*args, **kwargs)
+venv/lib/python3.8/site-packages/rest_framework/viewsets.py:125: in view
+    return self.dispatch(request, *args, **kwargs)
+venv/lib/python3.8/site-packages/rest_framework/views.py:509: in dispatch
+    response = self.handle_exception(exc)
+venv/lib/python3.8/site-packages/rest_framework/views.py:469: in handle_exception
+    self.raise_uncaught_exception(exc)
+venv/lib/python3.8/site-packages/rest_framework/views.py:480: in raise_uncaught_exception
+    raise exc
+venv/lib/python3.8/site-packages/rest_framework/views.py:506: in dispatch
+    response = handler(request, *args, **kwargs)
+venv/lib/python3.8/site-packages/rest_framework/mixins.py:54: in retrieve
+    instance = self.get_object()
+venv/lib/python3.8/site-packages/rest_framework/generics.py:99: in get_object
+    self.check_object_permissions(self.request, obj)
+venv/lib/python3.8/site-packages/rest_framework/views.py:345: in check_object_permissions
+    if not permission.has_object_permission(request, self, obj):
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <rest_framework.test.APIClient object at 0x10628ae80>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
+self = <api.permissions.ReviewCommentPermission object at 0x111126580>
+request = <rest_framework.request.Request: GET '/api/v1/titles/20/reviews/15/comments/8/'>
+view = <api.views.CommentViewSet object at 0x11110eac0>, obj = <Comment: qwerty>
 
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
+    def has_object_permission(self, request, view, obj):
+        return (request.user.is_superuser
+>               or request.user.role in ('admin', 'moderator')
+                or obj.author == request.user
+                or request.method in permissions.SAFE_METHODS)
+E       AttributeError: 'AnonymousUser' object has no attribute 'role'
 
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
+api_yamdb/api/permissions.py:54: AttributeError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
-______________ Test06CommentAPI.test_04_comment_check_permission _______________
-
-self = <tests.test_06_comment.Test06CommentAPI object at 0x1062a16d0>
-client = <django.test.client.Client object at 0x105e13b80>
-admin_client = <rest_framework.test.APIClient object at 0x105e08610>
-admin = <User: TestAdmin>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_04_comment_check_permission(self, client, admin_client, admin):
->       comments, reviews, titles, user, moderator = create_comments(admin_client, admin)
-
-tests/test_06_comment.py:228: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-tests/common.py:105: in create_comments
-    reviews, titles, user, moderator = create_reviews(admin_client, admin)
-tests/common.py:85: in create_reviews
-    titles, _, _ = create_titles(admin_client)
-tests/common.py:69: in create_titles
-    data['id'] = response.json()['id']
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-self = <rest_framework.test.APIClient object at 0x105e08610>
-response = <HttpResponseNotFound status_code=404, "text/html">, extra = {}
-
-    def _parse_json(self, response, **extra):
-        if not hasattr(response, '_json'):
-            if not JSON_CONTENT_TYPE_RE.match(response.get('Content-Type')):
->               raise ValueError(
-                    'Content-Type header is "{0}", not "application/json"'
-                    .format(response.get('Content-Type'))
-                )
-E               ValueError: Content-Type header is "text/html", not "application/json"
-
-venv/lib/python3.8/site-packages/django/test/client.py:666: ValueError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/genres/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/categories/
-WARNING  django.request:log.py:222 Not Found: /api/v1/titles/
---------------------------- Captured stderr teardown ---------------------------
-Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+ERROR    django.request:log.py:222 Internal Server Error: /api/v1/titles/20/reviews/15/comments/8/
+Traceback (most recent call last):
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/mixins.py", line 54, in retrieve
+    instance = self.get_object()
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/generics.py", line 99, in get_object
+    self.check_object_permissions(self.request, obj)
+  File "/Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/views.py", line 345, in check_object_permissions
+    if not permission.has_object_permission(request, self, obj):
+  File "/Users/alexey/Dev/api_yamdb/api_yamdb/api/permissions.py", line 54, in has_object_permission
+    or request.user.role in ('admin', 'moderator')
+AttributeError: 'AnonymousUser' object has no attribute 'role'
 =============================== warnings summary ===============================
 tests/test_01_users.py::Test01UserAPI::test_04_users_get_admin
 tests/test_01_users.py::Test01UserAPI::test_04_02_users_get_search
@@ -826,31 +657,25 @@ tests/test_01_users.py::Test01UserAPI::test_05_01_users_post_admin
   /Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/pagination.py:200: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'users.models.User'> QuerySet.
     paginator = self.django_paginator_class(queryset, page_size)
 
+tests/test_02_category.py::Test02CategoryAPI::test_01_category_not_auth
+tests/test_02_category.py::Test02CategoryAPI::test_02_category_admin
+  /Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/pagination.py:200: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'reviews.models.Category'> QuerySet.
+    paginator = self.django_paginator_class(queryset, page_size)
+
+tests/test_03_genre.py::Test03GenreAPI::test_01_genre_not_auth
+tests/test_03_genre.py::Test03GenreAPI::test_02_genre
+  /Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/pagination.py:200: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'reviews.models.Genre'> QuerySet.
+    paginator = self.django_paginator_class(queryset, page_size)
+
 -- Docs: https://docs.pytest.org/en/stable/warnings.html
 =========================== short test summary info ============================
 FAILED tests/test_00_user_registration.py::Test00UserRegistration::test_00_obtain_jwt_token_invalid_data
-FAILED tests/test_02_category.py::Test02CategoryAPI::test_01_category_not_auth
 FAILED tests/test_02_category.py::Test02CategoryAPI::test_02_category_admin
 FAILED tests/test_02_category.py::Test02CategoryAPI::test_03_category_delete_admin
-FAILED tests/test_02_category.py::Test02CategoryAPI::test_04_category_check_permission_admin
-FAILED tests/test_02_category.py::Test02CategoryAPI::test_05_category_create_user
-FAILED tests/test_02_category.py::Test02CategoryAPI::test_06_category_create_moderator
-FAILED tests/test_03_genre.py::Test03GenreAPI::test_01_genre_not_auth - Asser...
 FAILED tests/test_03_genre.py::Test03GenreAPI::test_02_genre - AssertionError...
 FAILED tests/test_03_genre.py::Test03GenreAPI::test_03_genres_delete - Assert...
-FAILED tests/test_03_genre.py::Test03GenreAPI::test_04_genres_check_permission
-FAILED tests/test_03_genre.py::Test03GenreAPI::test_05_genre_create_user - As...
-FAILED tests/test_03_genre.py::Test03GenreAPI::test_06_genre_create_moderator
-FAILED tests/test_04_title.py::Test04TitleAPI::test_01_title_not_auth - Asser...
 FAILED tests/test_04_title.py::Test04TitleAPI::test_02_title_admin - Assertio...
-FAILED tests/test_04_title.py::Test04TitleAPI::test_03_titles_detail - ValueE...
-FAILED tests/test_04_title.py::Test04TitleAPI::test_04_titles_check_permission
-FAILED tests/test_05_review.py::Test05ReviewAPI::test_01_review_not_auth - Va...
-FAILED tests/test_05_review.py::Test05ReviewAPI::test_02_review_admin - Value...
-FAILED tests/test_05_review.py::Test05ReviewAPI::test_03_review_detail - Valu...
-FAILED tests/test_05_review.py::Test05ReviewAPI::test_04_reviews_check_permission
-FAILED tests/test_06_comment.py::Test06CommentAPI::test_01_comment_not_auth
-FAILED tests/test_06_comment.py::Test06CommentAPI::test_02_comment - ValueErr...
-FAILED tests/test_06_comment.py::Test06CommentAPI::test_03_review_detail - Va...
-FAILED tests/test_06_comment.py::Test06CommentAPI::test_04_comment_check_permission
-================== 25 failed, 28 passed, 3 warnings in 12.43s ==================
+FAILED tests/test_05_review.py::Test05ReviewAPI::test_02_review_admin - Asser...
+FAILED tests/test_05_review.py::Test05ReviewAPI::test_03_review_detail - Attr...
+FAILED tests/test_06_comment.py::Test06CommentAPI::test_03_review_detail - At...
+================== 9 failed, 44 passed, 7 warnings in 10.67s ===================
