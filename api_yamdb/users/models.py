@@ -14,7 +14,9 @@ class User(AbstractUser):
 
 
 class Confirmation(models.Model):
+
     username = models.CharField(max_length=150, unique=True)
+
     code = models.PositiveIntegerField(
         'Six digits code for getting access to token endpoint',
         null=True,

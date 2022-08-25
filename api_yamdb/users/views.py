@@ -32,6 +32,7 @@ class SignUpView(generics.CreateAPIView):
         end = (10**DIGITS_AMOUNT_AT_CONFIRMATION_CODE) - 1
         confirmation_code = random.randint(start, end)
 
+
         # в данном месте нет смысла страховаться от эксепшенов,
         # тк данные уже прошли валидацию
         Confirmation.objects.create(
@@ -43,7 +44,9 @@ class SignUpView(generics.CreateAPIView):
         send_mail(
             subject=self.email_subject,
             message=self.email_message.format(
+
                 username=user.username, code=code
+
             ),
             recipient_list=[user.email],
             from_email=self.email_from,

@@ -4,6 +4,7 @@ from users.models import Confirmation, User
 
 
 class ConfirmationCodeBackend:
+
     def authenticate(
         self, request: Request, username: str, potential_code: int
     ):
@@ -21,4 +22,5 @@ class ConfirmationCodeBackend:
             raise InvalidConfirmationCode
 
         confirmation.delete()
+
         return user
