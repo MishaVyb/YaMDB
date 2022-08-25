@@ -21,30 +21,28 @@ from .serializers import CommentSerializer, ReviewSerializer
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [AdminOnlyPermission]
+    permission_classes = [AdminOrReadOnlyPermission]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
-    search_fields = [
-        "name",
-    ]    
+    search_fields = ['name']
+    lookup_field = 'slug'
 
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [AdminOnlyPermission]
+    permission_classes = [AdminOrReadOnlyPermission]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
-    search_fields = [
-        "name",
-    ]
+    search_fields = ['name']
+    lookup_field = 'slug'
 
 
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.annotate(
         rating=Avg('reviews__score')).order_by('name')
     ordering_fields = ('year', 'name')
-    permission_classes = [AdminOnlyPermission]
+    permission_classes = [AdminOrReadOnlyPermission]
     pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
