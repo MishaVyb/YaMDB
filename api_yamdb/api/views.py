@@ -1,10 +1,10 @@
 from django.db.models import Avg
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 
 from api.permissions import (
-    AdminOnlyPermission, AdminOrReadOnlyPermission, AuthorAdminModeratorPermission
+    AdminOnlyPermission, IsAdminOrReadonlyPermission
 )
 from api.serializers import (
     CategorySerializer, GenreSerializer, TitleGetSerializer,
@@ -18,20 +18,30 @@ from .permissions import ReviewCommentPermission
 from .serializers import CommentSerializer, ReviewSerializer
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [AdminOrReadOnlyPermission]
+    permission_classes = [IsAdminOrReadonlyPermission]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
     search_fields = ['name']
     lookup_field = 'slug'
 
 
-class GenreViewSet(viewsets.ModelViewSet):
+class GenreViewSet(
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [AdminOrReadOnlyPermission]
+    permission_classes = [IsAdminOrReadonlyPermission]
     pagination_class = PageNumberPagination
     filter_name = [filters.SearchFilter]
     search_fields = ['name']
@@ -42,13 +52,16 @@ class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.annotate(
         rating=Avg('reviews__score')).order_by('name')
     ordering_fields = ('year', 'name')
-    permission_classes = [AdminOrReadOnlyPermission]
+    permission_classes = [IsAdminOrReadonlyPermission]
     pagination_class = PageNumberPagination
+    filter_name = [filters.SearchFilter]
+    search_fields = ['name']
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return TitleGetSerializer
         return TitlePostSerializer
+
 
 class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = (ReviewCommentPermission,)
