@@ -5,10 +5,13 @@ from rest_framework import generics, pagination, permissions, status, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-from users.models import User, Confirmation
+from users.models import Confirmation, User
 from users.permitions import AdminUserPermission
-from users.serializers import (ConfirmationCodeTokenSerializer,
-                               SelfUserSerializer, UserSerializer)
+from users.serializers import (
+    ConfirmationCodeTokenSerializer,
+    SelfUserSerializer,
+    UserSerializer,
+)
 
 from api_yamdb.settings import DIGITS_AMOUNT_AT_CONFIRMATION_CODE
 
@@ -24,19 +27,26 @@ class SignUpView(generics.CreateAPIView):
         'Your confirmation code to login is: {code}. '
     )
 
-    def generate_code(self, user: User):
+    def generate_code(self, user: User) -> int:
         start = 1
         end = (10**DIGITS_AMOUNT_AT_CONFIRMATION_CODE) - 1
         confirmation_code = random.randint(start, end)
-        confirmation, created = Confirmation.objects.update_or_create(
-                                                 user=user,
-                                                 code=confirmation_code)
 
-    def send_email(self, user: User):
+
+        # в данном месте нет смысла страховаться от эксепшенов,
+        # тк данные уже прошли валидацию
+        Confirmation.objects.create(
+            username=user.username, code=confirmation_code
+        )
+        return confirmation_code
+
+    def send_confirmation_code(self, user: User, code: int):
         send_mail(
             subject=self.email_subject,
             message=self.email_message.format(
-                username=user.username, code=user.confirmation.code
+
+                username=user.username, code=code
+
             ),
             recipient_list=[user.email],
             from_email=self.email_from,
@@ -46,8 +56,8 @@ class SignUpView(generics.CreateAPIView):
         response = super().post(request)
 
         user: User = User.objects.get(username=response.data['username'])
-        self.generate_code(user)
-        self.send_email(user)
+        code = self.generate_code(user)
+        self.send_confirmation_code(user, code)
 
         data = {
             'username': response.data['username'],

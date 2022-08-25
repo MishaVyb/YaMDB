@@ -14,7 +14,7 @@ v1_router.register(
     CommentViewSet, basename='comments')
 
 urlpatterns = [
-    path('v1/', include('djoser.urls')),
-    path('v1/', include('djoser.urls.jwt')),
+    # path('v1/', include('djoser.urls')),  # джойсер больше не нужен
+    # path('v1/', include('djoser.urls.jwt')),  # джойсер больше не нужен
     path('v1/', include(v1_router.urls))
 ]

@@ -4,8 +4,9 @@ from reviews.choices import ROLE_CHOICES
 
 
 class User(AbstractUser):
-    role = models.CharField(choices=ROLE_CHOICES, max_length=10,
-                            default=ROLE_CHOICES[0])
+    role = models.CharField(
+        choices=ROLE_CHOICES, max_length=10, default=ROLE_CHOICES[0][0]
+    )
     bio = models.TextField(
         'Биография',
         blank=True,
@@ -13,9 +14,9 @@ class User(AbstractUser):
 
 
 class Confirmation(models.Model):
-    user = models.OneToOneField(User,
-                                on_delete=models.DO_NOTHING,
-                                related_name='confirmation', null=True)
+
+    username = models.CharField(max_length=150, unique=True)
+
     code = models.PositiveIntegerField(
         'Six digits code for getting access to token endpoint',
         null=True,
