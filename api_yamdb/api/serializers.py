@@ -1,5 +1,6 @@
 import datetime
 from django.core.validators import MaxValueValidator
+from rest_framework.validators import UniqueTogetherValidator
 from rest_framework import serializers
 
 from reviews.models import Title, Genre, Category
@@ -57,10 +58,18 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     author = serializers.SlugRelatedField(
         slug_field='username', read_only=True)
+    title_id = serializers.HiddenField(default='title_id')
 
     class Meta:
         model = Review
         fields = ('id', 'text', 'author', 'score', 'pub_date')
+
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Review.objects.all(),
+                fields=('title_id', 'author')
+            )
+        ]
 
     def validate_score(self, value):
         if not 1 <= int(value) <= 10:
@@ -77,4 +86,3 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'text', 'author', 'pub_date')
-
