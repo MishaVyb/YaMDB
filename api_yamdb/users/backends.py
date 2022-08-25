@@ -1,22 +1,24 @@
-from typing import Union
-
 from rest_framework.request import Request
 from users.exeptions import InvalidConfirmationCode, NoneConfirmationCode
-from users.models import User, Confirmation
-from django.shortcuts import get_object_or_404
+from users.models import Confirmation, User
 
 
 class ConfirmationCodeBackend:
     def authenticate(
-        self, request: Request, username: str, confirmation_code: int
-        ):
-        user = get_object_or_404(User, username=username)
+        self, request: Request, username: str, potential_code: int
+    ):
+        # в случае отсутсвие данного юзера, в валидаторе уже перехватывается и
+        # обрабатывается исключение User.DoesNotExist, так что нет
+        # необходимости в get_or_404
+        user = User.objects.get(username=username)
         try:
-            confirmation = Confirmation.objects.get(username=username)
-        except:
+            confirmation: Confirmation = Confirmation.objects.get(
+                username=username
+            )
+        except Confirmation.DoesNotExist:
             raise NoneConfirmationCode
-
-        Confirmation.object.filter(username=username).delete()
-        if not confirmation.code == confirmation_code:
+        if not confirmation.code == potential_code:
             raise InvalidConfirmationCode
+
+        confirmation.delete()
         return user

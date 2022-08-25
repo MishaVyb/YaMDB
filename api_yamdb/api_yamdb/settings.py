@@ -113,8 +113,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    # важно, чтобы наш кастомный бэкенд стоял раньше дефолтного джанговского
+    # иначе не пройдут пайтесты
     'users.backends.ConfirmationCodeBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 REST_FRAMEWORK = {
