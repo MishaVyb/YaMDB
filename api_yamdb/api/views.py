@@ -1,7 +1,6 @@
 from django.db.models import Avg
 from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import PageNumberPagination
-from django_filters.rest_framework import DjangoFilterBackend
 
 from api.permissions import (
     ListAnyOtherAdmin, GetAnyOtherAdmin
@@ -31,8 +30,8 @@ class CategoryViewSet(
     serializer_class = CategorySerializer
     permission_classes = [ListAnyOtherAdmin]
     pagination_class = PageNumberPagination
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
-    filterset_fields = ('slug',)
+    lookup_field = 'slug'
+    filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
 
 
@@ -46,35 +45,58 @@ class GenreViewSet(
     serializer_class = GenreSerializer
     permission_classes = [ListAnyOtherAdmin]
     pagination_class = PageNumberPagination
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
-    filterset_fields = ('slug',)
+    lookup_field = 'slug'
+    filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.annotate(
-        rating=Avg('reviews__score')).order_by('name')
-    ordering_fields = ('year', 'name')
     permission_classes = [GetAnyOtherAdmin]
     pagination_class = PageNumberPagination
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
-    filterset_fields = ('category', 'genre', 'name', 'year')
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return TitleGetSerializer
         return TitlePostSerializer
 
+    def get_queryset(self):
+        queryset = Title.objects.annotate(
+            rating=Avg('reviews__score')).order_by('name')
+
+        category = self.request.query_params.get('category', None)
+        if category is not None:
+            queryset = queryset.filter(category__slug=category)
+
+        genre = self.request.query_params.get('genre', None)
+        if genre is not None:
+            queryset = queryset.filter(genre__slug=genre)
+
+        name = self.request.query_params.get('name', None)
+        if name is not None:
+            queryset = queryset.filter(name__icontains=name)
+
+        year = self.request.query_params.get('year', None)
+        if year is not None:
+            queryset = queryset.filter(year=year)
+
+        return queryset
+
 
 class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = (ReviewCommentPermission,)
     pagination_class = PageNumberPagination
-
     serializer_class = ReviewSerializer
 
     def perform_create(self, serializer):
         title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
         serializer.save(title=title, author=self.request.user)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
 
     def get_queryset(self):
         title = get_object_or_404(Title,
