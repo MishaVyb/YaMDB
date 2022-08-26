@@ -7,11 +7,8 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from users.models import Confirmation, User
 from users.permitions import AdminUserPermission
-from users.serializers import (
-    ConfirmationCodeTokenSerializer,
-    SelfUserSerializer,
-    UserSerializer,
-)
+from users.serializers import (ConfirmationCodeTokenSerializer,
+                               SelfUserSerializer, UserSerializer)
 
 from api_yamdb.settings import DIGITS_AMOUNT_AT_CONFIRMATION_CODE
 
@@ -31,7 +28,6 @@ class SignUpView(generics.CreateAPIView):
         start = 1
         end = (10**DIGITS_AMOUNT_AT_CONFIRMATION_CODE) - 1
         confirmation_code = random.randint(start, end)
-
 
         # в данном месте нет смысла страховаться от эксепшенов,
         # тк данные уже прошли валидацию
