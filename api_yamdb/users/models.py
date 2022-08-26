@@ -11,6 +11,8 @@ class User(AbstractUser):
         'Биография',
         blank=True,
     )
+    class Meta:
+        ordering = ['last_name', 'first_name']
 
 
 class Confirmation(models.Model):

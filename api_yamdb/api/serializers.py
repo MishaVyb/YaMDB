@@ -7,6 +7,7 @@ from reviews.models import Title, Genre, Category
 from users.models import User
 from reviews.models import Review, Comment
 
+
 class GenreSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -51,7 +52,6 @@ class TitlePostSerializer(serializers.ModelSerializer):
                   'genre', 'year')
 
 
-
 class ReviewSerializer(serializers.ModelSerializer):
 
     author = serializers.SlugRelatedField(
@@ -63,7 +63,9 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         title_id = self.context['request'].parser_context['kwargs']['title_id']
-        if Review.objects.filter(author=self.context['request'].user, title_id=title_id).exists():
+        if (self.context['request'].method == 'POST'
+            and Review.objects.filter(author=self.context['request'].user,
+                                      title_id=title_id).exists()):
             raise serializers.ValidationError('Так не можно')
         return data
 
