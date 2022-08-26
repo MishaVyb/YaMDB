@@ -2,9 +2,11 @@ from django.db.models import Avg
 from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import PageNumberPagination
 
+
 from api.permissions import (
     ListAnyOtherAdmin, GetAnyOtherAdmin
 )
+
 from api.serializers import (
     CategorySerializer, GenreSerializer, TitleGetSerializer,
     TitlePostSerializer,
@@ -13,7 +15,9 @@ from reviews.models import Category, Genre, Title
 from django.shortcuts import get_object_or_404
 from reviews.models import Title, Review
 
-from .permissions import ReviewCommentPermission
+from .permissions import (ListAnyOtherAdmin,
+                          GetAnyOtherAdmin,
+                          ReviewCommentPermission)
 from .serializers import CommentSerializer, ReviewSerializer
 
 
@@ -68,9 +72,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     serializer_class = ReviewSerializer
 
-    def perform_create(self, serializer):
-        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
-        serializer.save(title=title, author=self.request.user)
+    # def perform_create(self, serializer):
+    #     title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
+    #     if title.reviews.filter(author=self.request.user).exists():
+    #         serializer.is_valid(raise_exception=True)
+    #     else:
+    #         serializer.save(title=title, author=self.request.user)
 
     def get_queryset(self):
         title = get_object_or_404(Title,
@@ -94,4 +101,3 @@ class CommentViewSet(viewsets.ModelViewSet):
         review = get_object_or_404(title.reviews.all(),
                                    pk=self.kwargs.get('review_id'))
         return review.comments.all()
-
