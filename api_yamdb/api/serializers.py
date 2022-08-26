@@ -1,10 +1,8 @@
 import datetime
 from django.core.validators import MaxValueValidator
-from rest_framework.validators import UniqueTogetherValidator
 from rest_framework import serializers
 
 from reviews.models import Title, Genre, Category
-from users.models import User
 from reviews.models import Review, Comment
 
 
