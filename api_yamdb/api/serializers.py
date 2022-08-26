@@ -4,6 +4,7 @@ from rest_framework.validators import UniqueTogetherValidator
 from rest_framework import serializers
 
 from reviews.models import Title, Genre, Category
+from users.models import User
 from reviews.models import Review, Comment
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -63,17 +64,20 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ('id', 'text', 'author', 'score', 'pub_date')
 
-        # validators = [
-        #     UniqueTogetherValidator(
-        #         queryset=Review.objects.all(),
-        #         fields=('title_id', 'author')
-        #     )
-        # ]
-
-    def validate(self, data):
-        if Review.objects.filter(author=data['author'], ):
-            raise serializers.ValidationError('Так не можно!')
-        return data
+    def create(self, validated_data):
+        request = self.context.get('request')
+        title_id = self.context.get('title_id')
+        author = request.user
+        try:
+            obj = Review.objects.create(
+                text = validated_data['text'],
+                author = author,
+                score = validated_data['score']
+                title = self.context.get('title')
+            )
+        except ValidationError as ex:
+            raise serializers.ValidationError({'detail': "It's impossible to create"})
+        return obj
 
 
     def validate_score(self, value):
