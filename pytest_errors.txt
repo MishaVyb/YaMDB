@@ -35,13 +35,13 @@ tests/test_01_users.py::Test01UserAPI::test_10_users_me_get_admin PASSED [ 50%]
 tests/test_01_users.py::Test01UserAPI::test_11_01_users_me_patch_admin PASSED [ 52%]
 tests/test_01_users.py::Test01UserAPI::test_11_02_users_me_patch_user PASSED [ 54%]
 tests/test_02_category.py::Test02CategoryAPI::test_01_category_not_auth PASSED [ 56%]
-tests/test_02_category.py::Test02CategoryAPI::test_02_category_admin FAILED [ 58%]
+tests/test_02_category.py::Test02CategoryAPI::test_02_category_admin PASSED [ 58%]
 tests/test_02_category.py::Test02CategoryAPI::test_03_category_delete_admin FAILED [ 60%]
 tests/test_02_category.py::Test02CategoryAPI::test_04_category_check_permission_admin PASSED [ 62%]
 tests/test_02_category.py::Test02CategoryAPI::test_05_category_create_user PASSED [ 64%]
 tests/test_02_category.py::Test02CategoryAPI::test_06_category_create_moderator PASSED [ 66%]
 tests/test_03_genre.py::Test03GenreAPI::test_01_genre_not_auth PASSED    [ 67%]
-tests/test_03_genre.py::Test03GenreAPI::test_02_genre FAILED             [ 69%]
+tests/test_03_genre.py::Test03GenreAPI::test_02_genre PASSED             [ 69%]
 tests/test_03_genre.py::Test03GenreAPI::test_03_genres_delete FAILED     [ 71%]
 tests/test_03_genre.py::Test03GenreAPI::test_04_genres_check_permission PASSED [ 73%]
 tests/test_03_genre.py::Test03GenreAPI::test_05_genre_create_user PASSED [ 75%]
@@ -51,8 +51,8 @@ tests/test_04_title.py::Test04TitleAPI::test_02_title_admin FAILED       [ 81%]
 tests/test_04_title.py::Test04TitleAPI::test_03_titles_detail PASSED     [ 83%]
 tests/test_04_title.py::Test04TitleAPI::test_04_titles_check_permission PASSED [ 84%]
 tests/test_05_review.py::Test05ReviewAPI::test_01_review_not_auth PASSED [ 86%]
-tests/test_05_review.py::Test05ReviewAPI::test_02_review_admin FAILED    [ 88%]
-tests/test_05_review.py::Test05ReviewAPI::test_03_review_detail PASSED   [ 90%]
+tests/test_05_review.py::Test05ReviewAPI::test_02_review_admin PASSED    [ 88%]
+tests/test_05_review.py::Test05ReviewAPI::test_03_review_detail FAILED   [ 90%]
 tests/test_05_review.py::Test05ReviewAPI::test_04_reviews_check_permission PASSED [ 92%]
 tests/test_06_comment.py::Test06CommentAPI::test_01_comment_not_auth PASSED [ 94%]
 tests/test_06_comment.py::Test06CommentAPI::test_02_comment PASSED       [ 96%]
@@ -60,235 +60,50 @@ tests/test_06_comment.py::Test06CommentAPI::test_03_review_detail PASSED [ 98%]
 tests/test_06_comment.py::Test06CommentAPI::test_04_comment_check_permission PASSED [100%]
 
 =================================== FAILURES ===================================
-___________________ Test02CategoryAPI.test_02_category_admin ___________________
-
-self = <tests.test_02_category.Test02CategoryAPI object at 0x110cb9280>
-admin_client = <rest_framework.test.APIClient object at 0x110cb9640>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_02_category_admin(self, admin_client):
-        data = {}
-        response = admin_client.post('/api/v1/categories/', data=data)
-        assert response.status_code == 400, (
-            'Проверьте, что при POST запросе `/api/v1/categories/` с не правильными данными возвращает статус 400'
-        )
-        data = {
-            'name': 'Фильм',
-            'slug': 'films'
-        }
-        response = admin_client.post('/api/v1/categories/', data=data)
-        assert response.status_code == 201, (
-            'Проверьте, что при POST запросе `/api/v1/categories/` с правильными данными возвращает статус 201'
-        )
-        data = {
-            'name': 'Новые фильмы',
-            'slug': 'films'
-        }
-        response = admin_client.post('/api/v1/categories/', data=data)
-        assert response.status_code == 400, (
-            'Проверьте, что при POST запросе `/api/v1/categories/` нельзя создать 2 категории с одинаковым `slug`'
-        )
-        data = {
-            'name': 'Книги',
-            'slug': 'books'
-        }
-        response = admin_client.post('/api/v1/categories/', data=data)
-        assert response.status_code == 201, (
-            'Проверьте, что при POST запросе `/api/v1/categories/` с правильными данными возвращает статус 201'
-        )
-        response = admin_client.get('/api/v1/categories/')
-        assert response.status_code == 200, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращает статус 200'
-        )
-        data = response.json()
-        assert 'count' in data, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
-            'Не найден параметр `count`'
-        )
-        assert 'next' in data, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
-            'Не найден параметр `next`'
-        )
-        assert 'previous' in data, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
-            'Не найден параметр `previous`'
-        )
-        assert 'results' in data, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
-            'Не найден параметр `results`'
-        )
-        assert data['count'] == 2, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
-            'Значение параметра `count` не правильное'
-        )
-        assert type(data['results']) == list, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
-            'Тип параметра `results` должен быть список'
-        )
-        assert len(data['results']) == 2, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
-            'Значение параметра `results` не правильное'
-        )
-        assert {'name': 'Книги', 'slug': 'books'} in data['results'], (
-            'Проверьте, что при GET запросе `/api/v1/categories/` возвращаете данные с пагинацией. '
-            'Значение параметра `results` не правильное'
-        )
-        response = admin_client.get('/api/v1/categories/?search=Книги')
-        data = response.json()
->       assert len(data['results']) == 1, (
-            'Проверьте, что при GET запросе `/api/v1/categories/` фильтуется по search параметру названия категории'
-        )
-E       AssertionError: Проверьте, что при GET запросе `/api/v1/categories/` фильтуется по search параметру названия категории
-E       assert 2 == 1
-E         +2
-E         -1
-
-tests/test_02_category.py:88: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Bad Request: /api/v1/categories/
-WARNING  django.request:log.py:222 Bad Request: /api/v1/categories/
 _______________ Test02CategoryAPI.test_03_category_delete_admin ________________
 
-self = <tests.test_02_category.Test02CategoryAPI object at 0x110cb9340>
-admin_client = <rest_framework.test.APIClient object at 0x110bd3850>
+self = <tests.test_02_category.Test02CategoryAPI object at 0x111d5bcd0>
+admin_client = <rest_framework.test.APIClient object at 0x111ec14c0>
 
     @pytest.mark.django_db(transaction=True)
     def test_03_category_delete_admin(self, admin_client):
         create_categories(admin_client)
         response = admin_client.delete('/api/v1/categories/books/')
-        assert response.status_code == 204, (
+>       assert response.status_code == 204, (
             'Проверьте, что при DELETE запросе `/api/v1/categories/{slug}/` возвращаете статус 204'
         )
-        response = admin_client.get('/api/v1/categories/')
-        test_data = response.json()['results']
-        assert len(test_data) == 1, (
-            'Проверьте, что при DELETE запросе `/api/v1/categories/{slug}/` удаляете категорию '
-        )
-        response = admin_client.get('/api/v1/categories/books/')
-        code = 405
->       assert response.status_code == code, (
-            'Проверьте, что при GET запросе `/api/v1/categories/{slug}/` '
-            f'возвращаете статус {code}'
-        )
-E       AssertionError: Проверьте, что при GET запросе `/api/v1/categories/{slug}/` возвращаете статус 405
-E       assert 404 == 405
+E       AssertionError: Проверьте, что при DELETE запросе `/api/v1/categories/{slug}/` возвращаете статус 204
+E       assert 404 == 204
 E         +404
-E         -405
+E         -204
 
-tests/test_02_category.py:106: AssertionError
+tests/test_02_category.py:96: AssertionError
 ------------------------------ Captured log call -------------------------------
 WARNING  django.request:log.py:222 Not Found: /api/v1/categories/books/
-_________________________ Test03GenreAPI.test_02_genre _________________________
-
-self = <tests.test_03_genre.Test03GenreAPI object at 0x110c5d610>
-admin_client = <rest_framework.test.APIClient object at 0x110c5dc70>
-
-    @pytest.mark.django_db(transaction=True)
-    def test_02_genre(self, admin_client):
-        data = {}
-        response = admin_client.post('/api/v1/genres/', data=data)
-        assert response.status_code == 400, (
-            'Проверьте, что при POST запросе `/api/v1/genres/` с не правильными данными возвращает статус 400'
-        )
-        data = {'name': 'Ужасы', 'slug': 'horror'}
-        response = admin_client.post('/api/v1/genres/', data=data)
-        assert response.status_code == 201, (
-            'Проверьте, что при POST запросе `/api/v1/genres/` с правильными данными возвращает статус 201'
-        )
-        data = {'name': 'Триллер', 'slug': 'horror'}
-        response = admin_client.post('/api/v1/genres/', data=data)
-        assert response.status_code == 400, (
-            'Проверьте, что при POST запросе `/api/v1/genres/` нельзя создать 2 жанра с одинаковым `slug`'
-        )
-        data = {'name': 'Комедия', 'slug': 'comedy'}
-        response = admin_client.post('/api/v1/genres/', data=data)
-        assert response.status_code == 201, (
-            'Проверьте, что при POST запросе `/api/v1/genres/` с правильными данными возвращает статус 201'
-        )
-        response = admin_client.get('/api/v1/genres/')
-        assert response.status_code == 200, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращает статус 200'
-        )
-        data = response.json()
-        assert 'count' in data, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
-            'Не найден параметр `count`'
-        )
-        assert 'next' in data, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
-            'Не найден параметр `next`'
-        )
-        assert 'previous' in data, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
-            'Не найден параметр `previous`'
-        )
-        assert 'results' in data, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
-            'Не найден параметр `results`'
-        )
-        assert data['count'] == 2, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
-            'Значение параметра `count` не правильное'
-        )
-        assert type(data['results']) == list, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
-            'Тип параметра `results` должен быть список'
-        )
-        assert len(data['results']) == 2, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
-            'Значение параметра `results` не правильное'
-        )
-        assert {'name': 'Ужасы', 'slug': 'horror'} in data['results'], (
-            'Проверьте, что при GET запросе `/api/v1/genres/` возвращаете данные с пагинацией. '
-            'Значение параметра `results` не правильное'
-        )
-        response = admin_client.get('/api/v1/genres/?search=Ужасы')
-        data = response.json()
->       assert len(data['results']) == 1, (
-            'Проверьте, что при GET запросе `/api/v1/genres/` фильтуется по search параметру названия жанра '
-        )
-E       AssertionError: Проверьте, что при GET запросе `/api/v1/genres/` фильтуется по search параметру названия жанра 
-E       assert 2 == 1
-E         +2
-E         -1
-
-tests/test_03_genre.py:79: AssertionError
------------------------------- Captured log call -------------------------------
-WARNING  django.request:log.py:222 Bad Request: /api/v1/genres/
-WARNING  django.request:log.py:222 Bad Request: /api/v1/genres/
 _____________________ Test03GenreAPI.test_03_genres_delete _____________________
 
-self = <tests.test_03_genre.Test03GenreAPI object at 0x110bd3ee0>
-admin_client = <rest_framework.test.APIClient object at 0x110b8b700>
+self = <tests.test_03_genre.Test03GenreAPI object at 0x111e48d90>
+admin_client = <rest_framework.test.APIClient object at 0x111dec760>
 
     @pytest.mark.django_db(transaction=True)
     def test_03_genres_delete(self, admin_client):
         genres = create_genre(admin_client)
         response = admin_client.delete(f'/api/v1/genres/{genres[0]["slug"]}/')
-        assert response.status_code == 204, (
+>       assert response.status_code == 204, (
             'Проверьте, что при DELETE запросе `/api/v1/genres/{slug}/` возвращаете статус 204'
         )
-        response = admin_client.get('/api/v1/genres/')
-        test_data = response.json()['results']
-        assert len(test_data) == len(genres) - 1, (
-            'Проверьте, что при DELETE запросе `/api/v1/genres/{slug}/` удаляете жанр '
-        )
-        response = admin_client.get(f'/api/v1/genres/{genres[0]["slug"]}/')
->       assert response.status_code == 405, (
-            'Проверьте, что при GET запросе `/api/v1/genres/{slug}/` возвращаете статус 405'
-        )
-E       AssertionError: Проверьте, что при GET запросе `/api/v1/genres/{slug}/` возвращаете статус 405
-E       assert 404 == 405
+E       AssertionError: Проверьте, что при DELETE запросе `/api/v1/genres/{slug}/` возвращаете статус 204
+E       assert 404 == 204
 E         +404
-E         -405
+E         -204
 
-tests/test_03_genre.py:96: AssertionError
+tests/test_03_genre.py:87: AssertionError
 ------------------------------ Captured log call -------------------------------
 WARNING  django.request:log.py:222 Not Found: /api/v1/genres/horror/
 ______________________ Test04TitleAPI.test_02_title_admin ______________________
 
-self = <tests.test_04_title.Test04TitleAPI object at 0x110c0ab80>
-admin_client = <rest_framework.test.APIClient object at 0x110c0e430>
+self = <tests.test_04_title.Test04TitleAPI object at 0x11217bdc0>
+admin_client = <rest_framework.test.APIClient object at 0x111e2e9a0>
 
     @pytest.mark.django_db(transaction=True)
     def test_02_title_admin(self, admin_client):
@@ -394,52 +209,66 @@ admin_client = <rest_framework.test.APIClient object at 0x110c0e430>
 >       assert len(data['results']) == 2, (
             'Проверьте, что при GET запросе `/api/v1/titles/` фильтуется по `genre` параметру `slug` жанра'
         )
-E       AssertionError: Проверьте, что при GET запросе `/api/v1/titles/` фильтуется по `genre` параметру `slug` жанра
-E       assert 3 == 2
-E         +3
-E         -2
+E       KeyError: 'results'
 
-tests/test_04_title.py:120: AssertionError
+tests/test_04_title.py:120: KeyError
 ------------------------------ Captured log call -------------------------------
 WARNING  django.request:log.py:222 Bad Request: /api/v1/titles/
-_____________________ Test05ReviewAPI.test_02_review_admin _____________________
+WARNING  django.request:log.py:222 Bad Request: /api/v1/titles/
+____________________ Test05ReviewAPI.test_03_review_detail _____________________
 
-self = <tests.test_05_review.Test05ReviewAPI object at 0x110b8f7c0>
-admin_client = <rest_framework.test.APIClient object at 0x110b8b850>
+self = <tests.test_05_review.Test05ReviewAPI object at 0x112203ee0>
+client = <django.test.client.Client object at 0x112203ac0>
+admin_client = <rest_framework.test.APIClient object at 0x112203130>
 admin = <User: TestAdmin>
 
     @pytest.mark.django_db(transaction=True)
-    def test_02_review_admin(self, admin_client, admin):
-        titles, _, _ = create_titles(admin_client)
-        user, moderator = create_users_api(admin_client)
-        client_user = auth_client(user)
-        client_moderator = auth_client(moderator)
-        data = {}
-        response = admin_client.post(f'/api/v1/titles/{titles[0]["id"]}/reviews/', data=data)
-        assert response.status_code == 400, (
-            'Проверьте, что при POST запросе `/api/v1/titles/{title_id}/reviews/` '
-            'с не правильными данными возвращает статус 400'
+    def test_03_review_detail(self, client, admin_client, admin):
+        reviews, titles, user, moderator = create_reviews(admin_client, admin)
+        response = client.get(f'/api/v1/titles/{titles[0]["id"]}/reviews/{reviews[0]["id"]}/')
+        assert response.status_code != 404, (
+            'Страница `/api/v1/titles/{title_id}/reviews/{review_id}/` не найдена, проверьте этот адрес в *urls.py*'
         )
-        self.create_review(admin_client, titles[0]["id"], 'qwerty', 5)
+        assert response.status_code == 200, (
+            'Проверьте, что при GET запросе `/api/v1/titles/{title_id}/reviews/{review_id}/` '
+            'без токена авторизации возвращается статус 200'
+        )
+        data = response.json()
+        assert type(data.get('id')) == int, (
+            'Проверьте, что при GET запросе `/api/v1/titles/{title_id}/reviews/{review_id}/` '
+            'возвращаете данные объекта. Значение `id` нет или не является целым числом.'
+        )
+        assert data.get('score') == reviews[0]['score'], (
+            'Проверьте, что при GET запросе `/api/v1/titles/{title_id}/reviews/{review_id}/` '
+            'возвращаете данные объекта. Значение `score` неправильное.'
+        )
+        assert data.get('text') == reviews[0]['text'], (
+            'Проверьте, что при GET запросе `/api/v1/titles/{title_id}/reviews/{review_id}/` '
+            'возвращаете данные объекта. Значение `text` неправильное.'
+        )
+        assert data.get('author') == reviews[0]['author'], (
+            'Проверьте, что при GET запросе `/api/v1/titles/{title_id}/reviews/{review_id}/` '
+            'возвращаете данные объекта. Значение `author` неправильное.'
+        )
+    
+        review_text = 'Топ ваще!!'
         data = {
-            'text': 'Шляпа',
-            'score': 1
+            'text': review_text,
+            'score': 10
         }
-        response = admin_client.post(f'/api/v1/titles/{titles[0]["id"]}/reviews/', data=data)
-        code = 400
->       assert response.status_code == code, (
-            'Проверьте, что при POST запросе на `/api/v1/titles/{title_id}/reviews/` '
-            'нельзя добавить второй отзыв на то же самое произведение, и возвращается '
-            f'статус {code}'
+        response = admin_client.patch(f'/api/v1/titles/{titles[0]["id"]}/reviews/{reviews[0]["id"]}/', data=data)
+>       assert response.status_code == 200, (
+            'Проверьте, что при PATCH запросе `/api/v1/titles/{title_id}/reviews/{review_id}/` '
+            'возвращается статус 200'
         )
-E       AssertionError: Проверьте, что при POST запросе на `/api/v1/titles/{title_id}/reviews/` нельзя добавить второй отзыв на то же самое произведение, и возвращается статус 400
-E       assert 201 == 400
-E         +201
-E         -400
+E       AssertionError: Проверьте, что при PATCH запросе `/api/v1/titles/{title_id}/reviews/{review_id}/` возвращается статус 200
+E       assert 400 == 200
+E         +400
+E         -200
 
-tests/test_05_review.py:49: AssertionError
+tests/test_05_review.py:235: AssertionError
 ------------------------------ Captured log call -------------------------------
-WARNING  django.request:log.py:222 Bad Request: /api/v1/titles/10/reviews/
+WARNING  django.request:log.py:222 Bad Request: /api/v1/titles/12/reviews/7/
 =============================== warnings summary ===============================
 tests/test_01_users.py::Test01UserAPI::test_04_users_get_admin
 tests/test_01_users.py::Test01UserAPI::test_04_02_users_get_search
@@ -449,22 +278,18 @@ tests/test_01_users.py::Test01UserAPI::test_05_01_users_post_admin
 
 tests/test_02_category.py::Test02CategoryAPI::test_01_category_not_auth
 tests/test_02_category.py::Test02CategoryAPI::test_02_category_admin
-tests/test_02_category.py::Test02CategoryAPI::test_03_category_delete_admin
   /Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/pagination.py:200: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'reviews.models.Category'> QuerySet.
     paginator = self.django_paginator_class(queryset, page_size)
 
 tests/test_03_genre.py::Test03GenreAPI::test_01_genre_not_auth
 tests/test_03_genre.py::Test03GenreAPI::test_02_genre
-tests/test_03_genre.py::Test03GenreAPI::test_03_genres_delete
   /Users/alexey/Dev/api_yamdb/venv/lib/python3.8/site-packages/rest_framework/pagination.py:200: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'reviews.models.Genre'> QuerySet.
     paginator = self.django_paginator_class(queryset, page_size)
 
 -- Docs: https://docs.pytest.org/en/stable/warnings.html
 =========================== short test summary info ============================
-FAILED tests/test_02_category.py::Test02CategoryAPI::test_02_category_admin
 FAILED tests/test_02_category.py::Test02CategoryAPI::test_03_category_delete_admin
-FAILED tests/test_03_genre.py::Test03GenreAPI::test_02_genre - AssertionError...
 FAILED tests/test_03_genre.py::Test03GenreAPI::test_03_genres_delete - Assert...
-FAILED tests/test_04_title.py::Test04TitleAPI::test_02_title_admin - Assertio...
-FAILED tests/test_05_review.py::Test05ReviewAPI::test_02_review_admin - Asser...
-=================== 6 failed, 47 passed, 9 warnings in 9.56s ===================
+FAILED tests/test_04_title.py::Test04TitleAPI::test_02_title_admin - KeyError...
+FAILED tests/test_05_review.py::Test05ReviewAPI::test_03_review_detail - Asse...
+=================== 4 failed, 49 passed, 7 warnings in 8.89s ===================

@@ -1,7 +1,7 @@
 from django.db.models import Avg
 from rest_framework import viewsets, filters, mixins
 from rest_framework.pagination import PageNumberPagination
-
+from django_filters.rest_framework import DjangoFilterBackend
 
 from api.permissions import (
     ListAnyOtherAdmin, GetAnyOtherAdmin
@@ -31,9 +31,9 @@ class CategoryViewSet(
     serializer_class = CategorySerializer
     permission_classes = [ListAnyOtherAdmin]
     pagination_class = PageNumberPagination
-    filter_name = [filters.SearchFilter]
-    search_fields = ['name']
-    lookup_field = 'slug'
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
+    filterset_fields = ('slug',)
+    search_fields = ('name',)
 
 
 class GenreViewSet(
@@ -46,9 +46,9 @@ class GenreViewSet(
     serializer_class = GenreSerializer
     permission_classes = [ListAnyOtherAdmin]
     pagination_class = PageNumberPagination
-    filter_name = [filters.SearchFilter]
-    search_fields = ['name']
-    lookup_field = 'slug'
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
+    filterset_fields = ('slug',)
+    search_fields = ('name',)
 
 
 class TitleViewSet(viewsets.ModelViewSet):
@@ -57,8 +57,8 @@ class TitleViewSet(viewsets.ModelViewSet):
     ordering_fields = ('year', 'name')
     permission_classes = [GetAnyOtherAdmin]
     pagination_class = PageNumberPagination
-    filter_name = [filters.SearchFilter]
-    search_fields = ['name']
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
+    filterset_fields = ('category', 'genre', 'name', 'year')
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
@@ -72,12 +72,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     serializer_class = ReviewSerializer
 
-    # def perform_create(self, serializer):
-    #     title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
-    #     if title.reviews.filter(author=self.request.user).exists():
-    #         serializer.is_valid(raise_exception=True)
-    #     else:
-    #         serializer.save(title=title, author=self.request.user)
+    def perform_create(self, serializer):
+        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
+        serializer.save(title=title, author=self.request.user)
 
     def get_queryset(self):
         title = get_object_or_404(Title,
