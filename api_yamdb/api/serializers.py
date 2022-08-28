@@ -1,5 +1,3 @@
-import datetime
-from django.core.validators import MaxValueValidator
 from rest_framework import serializers
 
 from reviews.models import Title, Genre, Category
@@ -40,9 +38,7 @@ class TitlePostSerializer(serializers.ModelSerializer):
         queryset=Genre.objects.all(),
         slug_field='slug'
     )
-    year = serializers.IntegerField(
-        validators=[MaxValueValidator(datetime.date.today().year)]
-    )
+    year = serializers.IntegerField()
 
     class Meta:
         model = Title
@@ -66,12 +62,6 @@ class ReviewSerializer(serializers.ModelSerializer):
                                       title_id=title_id).exists()):
             raise serializers.ValidationError('Так не можно')
         return data
-
-    def validate_score(self, value):
-        if not 1 <= int(value) <= 10:
-            raise serializers.ValidationError(
-                'Оценка должна быть в диапазоне от 1 до 10')
-        return value
 
 
 class CommentSerializer(serializers.ModelSerializer):

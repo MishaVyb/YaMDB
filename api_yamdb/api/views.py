@@ -91,13 +91,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
         title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
         serializer.save(title=title, author=self.request.user)
 
-    def perform_update(self, serializer):
-        serializer.save()
-
-    def partial_update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)
-
     def get_queryset(self):
         title = get_object_or_404(Title,
                                   pk=self.kwargs.get('title_id'))
