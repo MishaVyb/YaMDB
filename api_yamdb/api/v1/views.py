@@ -1,23 +1,15 @@
+from api.v1.permissions import (GetAnyOtherAdmin, ListAnyOtherAdmin,
+                                ReviewCommentPermission)
+from api.v1.serializers import (CategorySerializer, CommentSerializer,
+                                GenreSerializer, ReviewSerializer,
+                                TitleGetSerializer, TitlePostSerializer)
 from django.db.models import Avg
-from rest_framework import viewsets, filters, mixins
-from rest_framework.pagination import PageNumberPagination
-
-from api.permissions import (
-    ListAnyOtherAdmin, GetAnyOtherAdmin
-)
-
-from api.serializers import (
-    CategorySerializer, GenreSerializer, TitleGetSerializer,
-    TitlePostSerializer,
-)
-from reviews.models import Category, Genre, Title
 from django.shortcuts import get_object_or_404
-from reviews.models import Title, Review
-
-from .permissions import (ListAnyOtherAdmin,
-                          GetAnyOtherAdmin,
-                          ReviewCommentPermission)
-from .serializers import CommentSerializer, ReviewSerializer
+from rest_framework import filters, mixins, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.pagination import PageNumberPagination
+from reviews.models import Category, Genre, Review, Title
+from api.v1.filters import TitleFilter
 
 
 class CategoryViewSet(
@@ -53,33 +45,37 @@ class GenreViewSet(
 class TitleViewSet(viewsets.ModelViewSet):
     permission_classes = [GetAnyOtherAdmin]
     pagination_class = PageNumberPagination
+    queryset = Title.objects.annotate(
+        rating=Avg('reviews__score')).order_by('name')
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = TitleFilter
 
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return TitleGetSerializer
         return TitlePostSerializer
 
-    def get_queryset(self):
-        queryset = Title.objects.annotate(
-            rating=Avg('reviews__score')).order_by('name')
+    # def get_queryset(self):
+    #     queryset = Title.objects.annotate(
+    #         rating=Avg('reviews__score')).order_by('name')
 
-        category = self.request.query_params.get('category', None)
-        if category is not None:
-            queryset = queryset.filter(category__slug=category)
+    #     category = self.request.query_params.get('category', None)
+    #     if category is not None:
+    #         queryset = queryset.filter(category__slug=category)
 
-        genre = self.request.query_params.get('genre', None)
-        if genre is not None:
-            queryset = queryset.filter(genre__slug=genre)
+    #     genre = self.request.query_params.get('genre', None)
+    #     if genre is not None:
+    #         queryset = queryset.filter(genre__slug=genre)
 
-        name = self.request.query_params.get('name', None)
-        if name is not None:
-            queryset = queryset.filter(name__icontains=name)
+    #     name = self.request.query_params.get('name', None)
+    #     if name is not None:
+    #         queryset = queryset.filter(name__icontains=name)
 
-        year = self.request.query_params.get('year', None)
-        if year is not None:
-            queryset = queryset.filter(year=year)
+    #     year = self.request.query_params.get('year', None)
+    #     if year is not None:
+    #         queryset = queryset.filter(year=year)
 
-        return queryset
+    #     return queryset
 
 
 class ReviewViewSet(viewsets.ModelViewSet):

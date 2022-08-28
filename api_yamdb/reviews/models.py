@@ -2,7 +2,6 @@ import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.forms import ValidationError
-from django.core import validators
 
 User = get_user_model()
 
@@ -90,11 +89,7 @@ class Review(models.Model):
                                related_name='reviews',
                                on_delete=models.CASCADE,
                                verbose_name='Автор обзора')
-    score = models.PositiveSmallIntegerField(verbose_name='Оценка',
-                                validators=[validators.MinValueValidator(1,
-                                    message='Оценка не может быть меньше 1!'),
-                                validators.MaxValueValidator(10,
-                                    message='Оцена не может быть больше 10!')])
+    score = models.PositiveSmallIntegerField(verbose_name='оценка')
     pub_date = models.DateTimeField(
         auto_now_add=True, verbose_name='Дата публикации обзора')
 
@@ -106,7 +101,10 @@ class Review(models.Model):
             models.UniqueConstraint(
                 fields=['title', 'author'],
                 name='unique_title_author'
-            )
+            ),
+            models.CheckConstraint(
+                check=models.Q(score__gte=1, score__lte=10),
+                name='check_score_range',)
         ]
 
     def __str__(self):

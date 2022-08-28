@@ -56,11 +56,15 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ('id', 'text', 'author', 'score', 'pub_date')
 
     def validate(self, data):
-        title_id = self.context['request'].parser_context['kwargs']['title_id']
-        if (self.context['request'].method == 'POST'
-            and Review.objects.filter(author=self.context['request'].user,
-                                      title_id=title_id).exists()):
-            raise serializers.ValidationError('Так не можно')
+        if self.context['request'].method == 'POST':
+            title_id = self.context[
+                'request'
+            ].parser_context['kwargs']['title_id']
+            if Review.objects.filter(author=self.context['request'].user,
+                                     title_id=title_id).exists():
+                raise serializers.ValidationError('Публиковать более одного'
+                                                  ' обзора на одно и то же'
+                                                  ' произведение нельзя!')
         return data
 
 

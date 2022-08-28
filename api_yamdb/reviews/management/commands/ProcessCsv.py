@@ -7,7 +7,7 @@ import csv
 import os
 
 
-FILE_TABLE = (
+FILE_MODEL_MAPPING = (
     ('users.csv', User),
     ('category.csv', Category),
     ('genre.csv', Genre),
@@ -22,17 +22,16 @@ class Command(BaseCommand):
     help = 'Загрузка тестовых данных из каталога static/data/'
 
     def handle(self, *args, **options):
-        for file_table in FILE_TABLE:
-            _model = file_table[1]
+        for filename, model in FILE_MODEL_MAPPING:
             with open(os.path.join(settings.BASE_DIR, 'static/data',
-                                   file_table[0]
+                                   filename
                                    ), 'r') as csv_file:
                 csv_reader = csv.reader(csv_file, delimiter=',')
                 header = next(csv_reader)
                 for row in csv_reader:
-                    _object_dict = {key: value for key,
-                                    value in zip(header, row)}
+                    object_dict = {key: value for key,
+                                   value in zip(header, row)}
                     try:
-                        _model.objects.create(**_object_dict)
+                        model.objects.create(**object_dict)
                     except IntegrityError:
                         pass
