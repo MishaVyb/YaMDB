@@ -1,11 +1,11 @@
-from reviews.models import (Category, Genre, Title, Genre_Title,
-                            Review, Comment, User)
-from django.core.management.base import BaseCommand
-from django.conf import settings
-from django.db.utils import IntegrityError
 import csv
 import os
 
+from django.conf import settings
+from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
+from reviews.models import (Category, Comment, Genre, Genre_Title, Review,
+                            Title, User)
 
 FILE_MODEL_MAPPING = (
     ('users.csv', User),

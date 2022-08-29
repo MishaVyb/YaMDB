@@ -1,14 +1,14 @@
 import random
 
+from api.v1.permissions import OnlyAdminPermission
+from api.v1.serializers import (ConfirmationCodeTokenSerializer,
+                                SelfUserSerializer, UserSerializer)
 from django.core.mail import send_mail
 from rest_framework import generics, pagination, permissions, status, viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from users.models import Confirmation, User
-from users.permitions import AdminUserPermission
-from users.serializers import (ConfirmationCodeTokenSerializer,
-                               SelfUserSerializer, UserSerializer)
 
 from api_yamdb.settings import DIGITS_AMOUNT_AT_CONFIRMATION_CODE
 
@@ -40,9 +40,7 @@ class SignUpView(generics.CreateAPIView):
         send_mail(
             subject=self.email_subject,
             message=self.email_message.format(
-
                 username=user.username, code=code
-
             ),
             recipient_list=[user.email],
             from_email=self.email_from,
@@ -69,7 +67,7 @@ class ConfirmationCodeTokenView(TokenObtainPairView):
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AdminUserPermission]
+    permission_classes = [OnlyAdminPermission]
     pagination_class = pagination.PageNumberPagination
     lookup_field = 'username'
 

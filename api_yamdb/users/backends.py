@@ -4,7 +4,6 @@ from users.models import Confirmation, User
 
 
 class ConfirmationCodeBackend:
-
     def authenticate(
         self, request: Request, username: str, confirmation_code: int
     ):

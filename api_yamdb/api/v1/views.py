@@ -1,3 +1,4 @@
+from api.v1.filters import TitleFilter
 from api.v1.permissions import (GetAnyOtherAdmin, ListAnyOtherAdmin,
                                 ReviewCommentPermission)
 from api.v1.serializers import (CategorySerializer, CommentSerializer,
@@ -5,11 +6,10 @@ from api.v1.serializers import (CategorySerializer, CommentSerializer,
                                 TitleGetSerializer, TitlePostSerializer)
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
-from rest_framework import filters, mixins, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import PageNumberPagination
 from reviews.models import Category, Genre, Review, Title
-from api.v1.filters import TitleFilter
 
 
 class CategoryViewSet(

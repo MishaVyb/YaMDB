@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-
-
-from reviews.models import Genre, Title, Category, Review, Comment, Genre_Title
+from reviews.models import Category, Comment, Genre, Genre_Title, Review, Title
 
 User = get_user_model()
 
