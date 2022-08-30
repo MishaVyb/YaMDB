@@ -1,11 +1,7 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import update_last_login
 from rest_framework import exceptions, serializers
-from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import AccessToken
 from reviews.models import Category, Comment, Genre, Review, Title
-from users.exeptions import InvalidConfirmationCode, NoneConfirmationCode
-from users.models import User
+from users.models import Confirmation, User
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -132,36 +128,36 @@ class ConfirmationCodeTokenSerializer(serializers.Serializer):
     confirmation_code = serializers.IntegerField()
     token_class = AccessToken
     default_error_messages = {
-        'no_active_account': (
-            'No active account found with the given credentials'
+        'invalid_code': (
+            'No active account found with the given credentials. '
+        ),
+        'no_code': (
+            'User has not asked for confirmation code yet. '
+            'Hint: request siqnup endpoint first. '
         ),
     }
 
     def validate(self, attrs):
-        authenticate_kwargs = {
-            'request': self.context.get('request'),
-            'username': attrs['username'],
-            'confirmation_code': attrs['confirmation_code'],
-        }
+        username = attrs['username']
+        confirmation_code = attrs['confirmation_code']
 
         try:
-            self.user = authenticate(**authenticate_kwargs)
+            user: User = User.objects.get(username=username)
+            confirmation: Confirmation = Confirmation.objects.get(
+                username=username
+            )
         except User.DoesNotExist:
             raise exceptions.NotFound()
-        except NoneConfirmationCode as exception:
-            raise exceptions.APIException(exception.message)
-        except InvalidConfirmationCode as exception:
-            raise exceptions.ValidationError(exception.message)
+        except Confirmation.DoesNotExist:
+            raise exceptions.APIException(self.error_messages['no_code'])
 
-        if not api_settings.USER_AUTHENTICATION_RULE(self.user):
-            raise exceptions.AuthenticationFailed(
-                self.error_messages['no_active_account'],
-                'no_active_account',
+        if not confirmation.code == confirmation_code:
+            raise exceptions.ValidationError(
+                self.error_messages['invalid_code'],
+                'invalid_code',
             )
-        if api_settings.UPDATE_LAST_LOGIN:
-            update_last_login(None, self.user)
 
-        token = self.get_token(self.user)
+        token = self.get_token(user)
         return {'token': str(token)}
 
     @classmethod
