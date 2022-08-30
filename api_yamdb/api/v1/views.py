@@ -1,7 +1,8 @@
 from api.v1.filters import TitleFilter
 
 from api.v1.permissions import (IsAdminOrReadOnlyPermission,
-                                IsAuthorAdminModeratorOrReadOnly)
+                                IsAuthorAdminModeratorOrReadOnly,
+                                )
 
 from api.v1.serializers import (CategorySerializer, CommentSerializer,
                                 GenreSerializer, ReviewSerializer,
@@ -48,28 +49,6 @@ class TitleViewSet(viewsets.ModelViewSet):
         if self.action in ('list', 'retrieve'):
             return TitleGetSerializer
         return TitlePostSerializer
-
-    # def get_queryset(self):
-    #     queryset = Title.objects.annotate(
-    #         rating=Avg('reviews__score')).order_by('name')
-
-    #     category = self.request.query_params.get('category', None)
-    #     if category is not None:
-    #         queryset = queryset.filter(category__slug=category)
-
-    #     genre = self.request.query_params.get('genre', None)
-    #     if genre is not None:
-    #         queryset = queryset.filter(genre__slug=genre)
-
-    #     name = self.request.query_params.get('name', None)
-    #     if name is not None:
-    #         queryset = queryset.filter(name__icontains=name)
-
-    #     year = self.request.query_params.get('year', None)
-    #     if year is not None:
-    #         queryset = queryset.filter(year=year)
-
-    #     return queryset
 
 
 class ReviewViewSet(viewsets.ModelViewSet):

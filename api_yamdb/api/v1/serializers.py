@@ -4,7 +4,6 @@ from reviews.models import Category, Comment, Genre, Review, Title
 from users.models import Confirmation, User
 
 
-
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
@@ -60,8 +59,7 @@ class ReviewSerializer(serializers.ModelSerializer):
                 author=self.context['request'].user, title_id=title_id
             ).exists():
                 raise serializers.ValidationError(
-                    'Публиковать более одного'
-                    ' обзора на одно и то же'
+                    'Публиковать более одного обзора на одно и то же'
                     ' произведение нельзя!'
                 )
         return data
@@ -81,8 +79,8 @@ class CommentSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     forbidden_usernames = ('me', 'admin', 'superuser')
     default_error_messages = {
-        'forbidden_username': 'Username `{name}` is forbidden.',
-        'uniq_email': 'User with email `{email}` already exists.',
+        'forbidden_username': 'Имя `{name}` запрещено к использованию.',
+        'uniq_email': 'Пользователь с адресом `{email}` уже существует.',
     }
 
     class Meta:
@@ -130,11 +128,11 @@ class ConfirmationCodeTokenSerializer(serializers.Serializer):
     token_class = AccessToken
     default_error_messages = {
         'invalid_code': (
-            'No active account found with the given credentials. '
+            'Нет активных аккаунтов с таким кодом подтверждения. '
         ),
         'no_code': (
-            'User has not asked for confirmation code yet. '
-            'Hint: request siqnup endpoint first. '
+            'Пользователь еще не запросил код подтверждения. '
+            'Совет: сначала запросите регистрацию. '
         ),
     }
 

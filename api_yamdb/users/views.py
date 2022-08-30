@@ -1,6 +1,6 @@
 import random
 
-from api.v1.permissions import OnlyAdminPermission
+from api.v1.permissions import AdminOnlyPermission
 from api.v1.serializers import (ConfirmationCodeTokenSerializer,
                                 SelfUserSerializer, UserSerializer)
 from django.core.mail import send_mail
@@ -20,8 +20,8 @@ class SignUpView(generics.CreateAPIView):
     email_from = 'no-reply@yamdb.ru'
     email_subject = 'Confirmation code'
     email_message = (
-        'Hi, {username}! Registration for YaMDB completed successfully. '
-        'Your confirmation code to login is: {code}. '
+        'Привет, {username}! Регистрация на YaMDB успешна выполнена. '
+        'Твой код подтверждения для входа: {code}. '
     )
 
     def generate_code(self, user: User) -> int:
@@ -29,8 +29,6 @@ class SignUpView(generics.CreateAPIView):
         end = (10**DIGITS_AMOUNT_AT_CONFIRMATION_CODE) - 1
         confirmation_code = random.randint(start, end)
 
-        # в данном месте нет смысла страховаться от эксепшенов,
-        # тк данные уже прошли валидацию
         Confirmation.objects.create(
             username=user.username, code=confirmation_code
         )
@@ -67,7 +65,7 @@ class ConfirmationCodeTokenView(TokenObtainPairView):
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [OnlyAdminPermission]
+    permission_classes = [AdminOnlyPermission]
     pagination_class = pagination.PageNumberPagination
     lookup_field = 'username'
 
