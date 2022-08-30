@@ -4,16 +4,17 @@ from reviews.models import Category, Comment, Genre, Review, Title
 from users.models import Confirmation, User
 
 
+
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ('name', 'slug')
+        exclude = ('id', )
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name', 'slug')
+        exclude = ('id', )
 
 
 class TitleGetSerializer(serializers.ModelSerializer):
