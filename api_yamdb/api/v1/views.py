@@ -1,6 +1,8 @@
 from api.v1.filters import TitleFilter
+
 from api.v1.permissions import (IsAdminOrReadOnlyPermission,
                                 IsAuthorAdminModeratorOrReadOnly)
+
 from api.v1.serializers import (CategorySerializer, CommentSerializer,
                                 GenreSerializer, ReviewSerializer,
                                 TitleGetSerializer, TitlePostSerializer)
