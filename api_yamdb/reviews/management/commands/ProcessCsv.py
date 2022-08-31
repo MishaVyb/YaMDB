@@ -4,9 +4,16 @@ import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
-from reviews.models import (Category, Comment, Genre, Genre_Title, Review,
-                            Title, User)
 from progress.bar import Bar
+from reviews.models import (
+    Category,
+    Comment,
+    Genre,
+    Genre_Title,
+    Review,
+    Title,
+    User,
+)
 
 FILE_MODEL_MAPPING = (
     ('users.csv', User),
@@ -24,17 +31,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for filename, model in FILE_MODEL_MAPPING:
-            with open(os.path.join(settings.BASE_DIR, 'static/data',
-                                   filename
-                                   ), 'r') as csv_file:
+            with open(
+                os.path.join(settings.BASE_DIR, 'static/data', filename), 'r'
+            ) as csv_file:
                 csv_list = csv_file.readlines()
                 csv_reader = csv.reader(csv_list, delimiter=',')
-                bar = Bar(f'{str(filename)} --> {model._meta.verbose_name}',
-                    max = len(csv_list)-1)
+                bar = Bar(
+                    f'{str(filename)} --> {model._meta.verbose_name}',
+                    max=len(csv_list) - 1,
+                )
                 header = next(csv_reader)
                 for row in csv_reader:
-                    object_dict = {key: value for key,
-                                   value in zip(header, row)}
+                    object_dict = {
+                        key: value for key, value in zip(header, row)
+                    }
                     bar.next()
                     try:
                         model.objects.create(**object_dict)

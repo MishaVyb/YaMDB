@@ -7,13 +7,13 @@ from users.models import Confirmation, User
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        exclude = ('id', )
+        exclude = ('id',)
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        exclude = ('id', )
+        exclude = ('id',)
 
 
 class TitleGetSerializer(serializers.ModelSerializer):
