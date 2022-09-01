@@ -1,19 +1,18 @@
-from rest_framework import exceptions, serializers
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework import serializers
 from reviews.models import Category, Comment, Genre, Review, Title
-from users.models import Confirmation, User
+from users.models import User
 
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        exclude = ('id', )
+        exclude = ('id',)
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        exclude = ('id', )
+        exclude = ('id',)
 
 
 class TitleGetSerializer(serializers.ModelSerializer):
@@ -117,48 +116,10 @@ class UserSerializer(serializers.ModelSerializer):
 class SelfUserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         extra_kwargs = {
-            'email': {'required': True},
             'role': {'read_only': True},
         }
 
 
 class ConfirmationCodeTokenSerializer(serializers.Serializer):
     username = serializers.SlugField()
-    confirmation_code = serializers.IntegerField()
-    token_class = AccessToken
-    default_error_messages = {
-        'invalid_code': (
-            'Нет активных аккаунтов с таким кодом подтверждения. '
-        ),
-        'no_code': (
-            'Пользователь еще не запросил код подтверждения. '
-            'Совет: сначала запросите регистрацию. '
-        ),
-    }
-
-    def validate(self, attrs):
-        username = attrs['username']
-        confirmation_code = attrs['confirmation_code']
-
-        try:
-            user: User = User.objects.get(username=username)
-            confirmation: Confirmation = Confirmation.objects.get(
-                username=username
-            )
-        except User.DoesNotExist:
-            raise exceptions.NotFound()
-        except Confirmation.DoesNotExist:
-            raise exceptions.APIException(self.error_messages['no_code'])
-
-        if not confirmation.code == confirmation_code:
-            raise exceptions.ValidationError(
-                self.error_messages['invalid_code'],
-                'invalid_code',
-            )
-
-        token = self.get_token(user)
-        return {'token': str(token)}
-
-    @classmethod
-    def get_token(cls, user):
-        return cls.token_class.for_user(user)
+    confirmation_code = serializers.CharField()
