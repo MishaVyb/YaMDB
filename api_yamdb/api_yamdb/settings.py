@@ -1,17 +1,13 @@
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import os
 from datetime import timedelta
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# В проде спрятать секретный ключ!
-"""
+
 load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
-"""
-SECRET_KEY = 'p&l%385148kslhtyn^##a1)ilz@4zqj=rq&agdol^##zgl9(vs'
-DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
